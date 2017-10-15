@@ -32,4 +32,13 @@ class InputManager(object):
             if event.type == pygame.QUIT:
                 sys.exit()
 
+    def handleMenuEvents(self):
+        """
+        Handle events for menu
+        :return: Nothing
+        """
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
 inputManager = InputManager()

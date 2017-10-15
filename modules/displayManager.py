@@ -46,7 +46,7 @@ class DisplayManager(object):
         """
 
         # Clear screen
-        self.screen.fill(Colors.BLACK)
+        self.screen.fill(Colors.BLACK.value)
 
         # Display stuff
 
