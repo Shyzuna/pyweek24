@@ -11,6 +11,7 @@ from modules.displayManager import displayManager
 from modules.inputManager import inputManager
 from modules.guiManager import guiManager
 from modules.mapManager import mapManager
+from modules.scrollManager import scrollManager
 
 def menuLoop():
     while True:
@@ -21,6 +22,9 @@ def menuLoop():
 
 def gameLoop():
     while True:
+        # TODO: Test si l'on est en mouvement pour éviter de lancer pour rien
+        scrollManager.checkPlayerPosition(mapManager)
+
         inputManager.handleEvents()
         displayManager.display()
 
