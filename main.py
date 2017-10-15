@@ -9,8 +9,10 @@ TODO:
 
 from modules.displayManager import displayManager
 from modules.inputManager import inputManager
+from modules.mapManager import mapManager
 
 if __name__ == "__main__":
+    mapManager.load('test.map', [])
     displayManager.init()
     while True:
         inputManager.handleEvents()
