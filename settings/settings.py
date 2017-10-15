@@ -10,7 +10,7 @@ SCREEN_HEIGHT = 16
 # Number of tiles to display
 TILES_TO_DISPLAY = 2
 
-# Scroll zone (number of tiles)
+# Scroll zone (in pixels)
 SCROLL_ZONE= 2
 
 # Important
