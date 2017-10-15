@@ -10,6 +10,7 @@ TODO:
 from modules.displayManager import displayManager
 from modules.inputManager import inputManager
 from modules.guiManager import guiManager
+from modules.mapManager import mapManager
 
 def menuLoop():
     while True:
@@ -24,8 +25,9 @@ def gameLoop():
         displayManager.display()
 
 if __name__ == "__main__":
-
     displayManager.init()
+    guiManager.init()
+    mapManager.load('test.map',[])
     menuLoop()
     gameLoop()
     displayManager.quit()

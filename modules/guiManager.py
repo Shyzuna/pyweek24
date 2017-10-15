@@ -23,6 +23,13 @@ class GUIManager(object):
 
     def __init__(self):
         """
+        Nothing much to do here
+        :return: Nothing
+        """
+
+
+    def init(self):
+        """
         Check if display already init and get the screen
         :return: Nothing
         """
@@ -40,9 +47,8 @@ class GUIManager(object):
         Display menu elements
         :return: Nothing
         """
-
         # Clear screen
-        self.screen.fill(Colors.BLACK)
+        self.screen.fill(Colors.BLACK.value)
 
         # Display stuff
 
