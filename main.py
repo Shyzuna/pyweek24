@@ -7,5 +7,11 @@ TODO:
 *
 """
 
+from modules.displayManager import displayManager
+from modules.inputManager import inputManager
+
 if __name__ == "__main__":
-    pass
+    displayManager.init()
+    while True:
+        inputManager.handleEvents()
+    displayManager.quit()
