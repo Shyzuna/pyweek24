@@ -40,10 +40,5 @@ objectProperties = {
         'isThrowable': False,
         'isMovable': False,
         'isClimbable': False
-    },
-    objectType.NINJA: {
-        'isThrowable': False,
-        'isMovable': False,
-        'isClimbable': False
     }
 }
