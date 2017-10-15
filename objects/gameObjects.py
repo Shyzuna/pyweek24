@@ -16,6 +16,7 @@ class GameObject:
         self.width = width
         self.height = height
 
+
 class Ninja(GameObject):
     """
     A Ninja
@@ -27,7 +28,7 @@ class Ninja(GameObject):
 
         '''
 
-        super(GameObject, self).__init__(name, type, x, y, width, height)
+        super(Ninja, self).__init__(name, type, x, y, width, height)
 
 class Player(GameObject):
     """
@@ -40,7 +41,7 @@ class Player(GameObject):
 
         '''
 
-        super(GameObject, self).__init__(name, type, x, y, width, height)
+        super(Player, self).__init__(name, type, x, y, width, height)
 
 class Trap(GameObject):
     """
@@ -53,4 +54,4 @@ class Trap(GameObject):
 
         '''
 
-        super(GameObject, self).__init__(name, type, x, y, width, height)
+        super(Trap, self).__init__(name, type, x, y, width, height)

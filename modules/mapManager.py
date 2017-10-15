@@ -18,6 +18,10 @@ class MapManager:
         self.tiles = []
         self.dialogs = []
 
+        self.displayedTiles = []
+        self.startTile = 4
+        self.isAnEnd = False
+
     def load(self, name, img):
         """
         Loads a map
@@ -65,6 +69,7 @@ class MapManager:
                 name, type, pos = line.split('|')
 
                 x, y = pos.split('x')
+                x, y = int(x), int(y)
                 #w, h = img[name].get_width(), img[name].get_height()
                 w, h = 0, 1
 
@@ -72,22 +77,78 @@ class MapManager:
 
                 obj = None
 
-                if type == objectType.GAME_OBJECT:
+                if type == objectType.GAME_OBJECT.value:
                     obj = gameObjects.GameObject(name, type, x, y, w, h)
 
-                elif type == objectType.NINJA:
+                elif type == objectType.NINJA.value:
                     obj = gameObjects.Ninja(name, type, x, y, w, h)
 
-                elif type == objectType.PLAYER:
-                    obj = gameObjects.player(name, type, x, y, w, h)
+                elif type == objectType.PLAYER.value:
+                    obj = gameObjects.Player(name, type, x, y, w, h)
 
-                elif type == objectType.TRAP:
-                    obj = gameObjects.trap(name, type, x, y, w, h)
+                elif type == objectType.TRAP.value:
+                    obj = gameObjects.Trap(name, type, x, y, w, h)
 
                 if obj is not None:
                     self.objects[name] = obj
 
                 line = mapFile.readline()
+
+            print(objectType.GAME_OBJECT.value)
+
+        # Displayed tiles computation
+        self.computeDisplayedTiles()
+
+    def goToRight(self):
+        """
+        Moves starting index of displayed tiles to the right
+        """
+        if self.startTile < self.width - 1:
+            self.startTile += 1
+            self.computeDisplayedTiles()
+
+    def goToLeft(self):
+        """
+        Moves starting index of displayed tiles to the left
+        """
+        if self.startTile > 0:
+            self.startTile -= 1
+            self.computeDisplayedTiles()
+
+    def computeDisplayedTiles(self):
+        """
+        Computes tiles to display
+
+        """
+
+        self.displayedTiles = []
+
+        # Left limit
+        if self.startTile < settings.TILES_TO_DISPLAY and not self.isAnEnd:
+            print('Left')
+            for tilesLine in self.tiles:
+                self.displayedTiles.append(tilesLine[:settings.TILES_TO_DISPLAY])
+
+            self.isAnEnd = True
+
+        # Right limit
+        elif self.startTile  > (self.width - settings.TILES_TO_DISPLAY):
+            print('Right')
+            for tilesLine in self.tiles:
+                self.displayedTiles.append(tilesLine[-settings.TILES_TO_DISPLAY:])
+
+            self.isAnEnd = True
+
+        # Middle of the map
+        else:
+            print('Middle')
+            for tilesLine in self.tiles:
+                self.displayedTiles.append(tilesLine[self.startTile:self.startTile + settings.TILES_TO_DISPLAY])
+
+            self.isAnEnd = False
+
+        print(self.startTile)
+        print(self.displayedTiles)
 
 mapManager = MapManager()
 

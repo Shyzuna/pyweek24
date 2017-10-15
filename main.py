@@ -10,10 +10,14 @@ TODO:
 from modules.displayManager import displayManager
 from modules.inputManager import inputManager
 from modules.mapManager import mapManager
+from modules.scrollManager import scrollManager
 
 if __name__ == "__main__":
     mapManager.load('test.map', [])
     displayManager.init()
     while True:
+        # TODO: Test si l'on est en mouvement pour éviter de lancer pour rien
+        scrollManager.checkPlayerPosition(mapManager)
+
         inputManager.handleEvents()
     displayManager.quit()
