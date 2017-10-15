@@ -14,7 +14,7 @@ from modules.mapManager import mapManager
 
 def menuLoop():
     while True:
-        inputManager.handleMenuEvents()
+        inputManager.handleMenuEvents(guiManager)
         if guiManager.startGame:
             break
         guiManager.displayMenu()

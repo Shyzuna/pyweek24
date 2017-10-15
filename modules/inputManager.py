@@ -32,7 +32,7 @@ class InputManager(object):
             if event.type == pygame.QUIT:
                 sys.exit()
 
-    def handleMenuEvents(self):
+    def handleMenuEvents(self,guiManager):
         """
         Handle events for menu
         :return: Nothing
@@ -40,5 +40,19 @@ class InputManager(object):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_ESCAPE:
+                    sys.exit()
+                elif event.key == pygame.K_UP:
+                    guiManager.upButtonSelection()
+                elif event.key == pygame.K_DOWN:
+                    guiManager.downButtonSelection()
+                elif event.key == pygame.K_SPACE:
+                    # TODO use enum for button ?
+                    if guiManager.currentButton == 0:
+                        guiManager.startGame = True
+                    elif guiManager.currentButton == 2:
+                        sys.exit()
 
 inputManager = InputManager()
