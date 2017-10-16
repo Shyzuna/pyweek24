@@ -8,7 +8,7 @@ TODO:
 """
 
 import settings.settings as settings
-from objects.enums import Colors
+from objects.enums import Colors,ObjectName
 from settings.objectSettings import objectProperties
 
 import pygame
@@ -73,7 +73,8 @@ class DisplayManager(object):
             w,h = self.objectsImg[object.name].get_size()
             object.width = w
             object.height = h
-        print(self.objectsImg)
+            if object.name in [ObjectName.PLAYER,ObjectName.NINJA]:
+                object.initSpriteSheet()
 
     def toggleFullScreen(self,guiManager):
         """
@@ -119,7 +120,7 @@ class DisplayManager(object):
             startX = 0
 
         for object in mapManager.objects.values():
-            self.screen.blit(self.objectsImg[object.name],(object.x,object.y))
+            object.blit(self.screen,self.objectsImg)
 
         # Update screen
         pygame.display.flip()

@@ -11,6 +11,7 @@ from modules.displayManager import displayManager
 from modules.inputManager import inputManager
 from modules.guiManager import guiManager
 from modules.mapManager import mapManager
+from modules.PhysicsManager import physicsManager
 from modules.scrollManager import scrollManager
 import settings.settings as settings
 
@@ -80,6 +81,7 @@ class GameManager(object):
         # TODO: Test si l'on est en mouvement pour éviter de lancer pour rien
         #scrollManager.checkPlayerPosition(mapManager)
         inputManager.handleEvents(guiManager,displayManager)
+        physicsManager.applyGravity(mapManager,self.deltaTime)
         displayManager.display(mapManager)
 
 gameManager = GameManager()
