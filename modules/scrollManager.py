@@ -1,4 +1,5 @@
 import settings.settings as settings
+from objects.enums import ObjectName
 
 class ScrollManager:
     """
@@ -19,29 +20,29 @@ class ScrollManager:
         :return:
         """
 
-        #print('Player pos : ' + str(map.objects['PLAYER'].x) + ' ' + str(map.objects['PLAYER'].y))
+        #print('Player pos : ' + str(map.objects[ObjectName.PLAYER].x) + ' ' + str(map.objects[ObjectName.PLAYER].y))
 
         # TODO: To remove
-        if map.objects['PLAYER'].x < settings.SCREEN_WIDTH - settings.SCROLL_ZONE_X + 50:
-            map.objects['PLAYER'].x += 100
+        if map.objects[ObjectName.PLAYER].x < settings.SCREEN_WIDTH - settings.SCROLL_ZONE_X + 50:
+            map.objects[ObjectName.PLAYER].x += 100
 
-        #if map.objects['PLAYER'].x > settings.SCROLL_ZONE - 50:
-        #    map.objects['PLAYER'].x -= 100
+        #if map.objects[ObjectName.PLAYER].x > settings.SCROLL_ZONE - 50:
+        #    map.objects[ObjectName.PLAYER].x -= 100
 
-        #if map.objects['PLAYER'].x > settings.SCROLL_ZONE_Y - 50:
-        #    map.objects['PLAYER'].x -= 100
+        #if map.objects[ObjectName.PLAYER].x > settings.SCROLL_ZONE_Y - 50:
+        #    map.objects[ObjectName.PLAYER].x -= 100
 
-        #if map.objects['PLAYER'].y < settings.SCREEN_HEIGHT - settings.SCROLL_ZONE_Y + 50:
-        #    map.objects['PLAYER'].y += 100
+        #if map.objects[ObjectName.PLAYER].y < settings.SCREEN_HEIGHT - settings.SCROLL_ZONE_Y + 50:
+        #    map.objects[ObjectName.PLAYER].y += 100
 
-        if map.objects['PLAYER'].x < settings.SCROLL_ZONE_X:
+        if map.objects[ObjectName.PLAYER].x < settings.SCROLL_ZONE_X:
             map.goToLeft()
-        elif map.objects['PLAYER'].x > settings.SCREEN_WIDTH - settings.SCROLL_ZONE_X:
+        elif map.objects[ObjectName.PLAYER].x > settings.SCREEN_WIDTH - settings.SCROLL_ZONE_X:
             map.goToRight()
 
-        if map.objects['PLAYER'].y < settings.SCROLL_ZONE_Y:
+        if map.objects[ObjectName.PLAYER].y < settings.SCROLL_ZONE_Y:
             map.goUp()
-        elif map.objects['PLAYER'].y > settings.SCREEN_HEIGHT - settings.SCROLL_ZONE_Y:
+        elif map.objects[ObjectName.PLAYER].y > settings.SCREEN_HEIGHT - settings.SCROLL_ZONE_Y:
             map.goDown()
 
 
