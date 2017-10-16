@@ -106,6 +106,10 @@ class GUIManager(object):
     def downButtonSelection(self):
         self.currentButton = (self.currentButton + 1) % (self.totalButton)
 
+    def updateScreen(self):
+        self.screen = pygame.display.get_surface()
+        self.initMenu()
+
     def displayMenu(self):
         """
         Display menu elements

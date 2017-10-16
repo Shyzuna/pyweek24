@@ -69,7 +69,7 @@ class GameManager(object):
                 pygame.display.set_caption(str(round(self.clock.get_fps(),2)) + " - " + settings.GAME_TITLE)
 
     def menuLoop(self):
-        inputManager.handleMenuEvents(guiManager)
+        inputManager.handleMenuEvents(guiManager,displayManager)
         if guiManager.startGame:
             self.done = True
         guiManager.displayMenu()
@@ -77,7 +77,7 @@ class GameManager(object):
     def gameLoop(self):
         # TODO: Test si l'on est en mouvement pour éviter de lancer pour rien
         scrollManager.checkPlayerPosition(mapManager)
-        inputManager.handleEvents()
+        inputManager.handleEvents(guiManager,displayManager)
         displayManager.display()
 
 gameManager = GameManager()

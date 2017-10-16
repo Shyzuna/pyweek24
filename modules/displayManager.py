@@ -35,8 +35,28 @@ class DisplayManager(object):
         pygame.display.init()
         self.screen = pygame.display.set_mode((settings.SCREEN_WIDTH,settings.SCREEN_HEIGHT))
         pygame.display.set_caption(settings.GAME_TITLE)
+        self.isFullscreen = False
+
+
+    def toggleFullScreen(self,guiManager):
+        """
+        Change fullscreen mode
+        :return: Nothing
+        """
+        self.isFullscreen = not self.isFullscreen
+        flags = pygame.FULLSCREEN if self.isFullscreen else None
+        if flags:
+            self.screen = pygame.display.set_mode((settings.SCREEN_WIDTH,settings.SCREEN_HEIGHT),
+                                              flags)
+        else:
+            self.screen = pygame.display.set_mode((settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
+        guiManager.updateScreen()
 
     def quit(self):
+        """
+        Used to exit the game and close display
+        :return: Nothing
+        """
         pygame.display.quit()
 
     def display(self):

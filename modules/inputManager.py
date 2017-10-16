@@ -24,7 +24,11 @@ class InputManager(object):
         """
         pass
 
-    def handleEvents(self):
+    def handleFullScreen(self,displayManager,guiManager,event):
+        if event.key == pygame.K_F5:
+            displayManager.toggleFullScreen(guiManager)
+
+    def handleEvents(self,guiManager,displayManager):
         """
         Update events data and handle closing event
         :return: Nothing
@@ -32,8 +36,10 @@ class InputManager(object):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            if event.type == pygame.KEYUP:
+                self.handleFullScreen(displayManager, guiManager,event)
 
-    def handleMenuEvents(self,guiManager):
+    def handleMenuEvents(self,guiManager,displayManager):
         """
         Handle events for menu
         :return: Nothing
@@ -43,6 +49,9 @@ class InputManager(object):
                 sys.exit()
 
             if event.type == pygame.KEYUP:
+
+                self.handleFullScreen(displayManager, guiManager, event)
+
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
                 elif event.key == pygame.K_UP:
