@@ -39,7 +39,7 @@ class PhysicsManager(object):
         for x,y in cornerL:
             tileX = math.floor(x / mapManager.tileWidth)
             tileY = math.floor(y / mapManager.tileHeight)
-            if mapManager.tiles[tileY][tileX] not in self.nonBlockingTiles:
+            if mapManager.displayedTiles[tileY][tileX] not in self.nonBlockingTiles:
                 return False
         return True
 

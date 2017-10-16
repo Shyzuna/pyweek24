@@ -80,8 +80,8 @@ class GameManager(object):
     def gameLoop(self):
         # TODO: Test si l'on est en mouvement pour éviter de lancer pour rien
         scrollManager.checkPlayerPosition(mapManager)
-        inputManager.handleEvents(guiManager,displayManager)
-        physicsManager.applyGravity(mapManager,self.deltaTime)
+        inputManager.handleEvents(guiManager, displayManager)
+        physicsManager.applyGravity(mapManager, self.deltaTime)
         displayManager.display(mapManager)
 
 gameManager = GameManager()
