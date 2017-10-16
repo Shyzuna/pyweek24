@@ -1,6 +1,7 @@
 import os
 
 from objects.enums import ObjectType as objectType
+from objects.enums import ObjectName as objectName
 import objects.gameObjects as gameObjects
 import settings.settings as settings
 
@@ -74,9 +75,12 @@ class MapManager:
             while settings.DATA_DELIMITER not in line:
                 line = line.rstrip()
                 name, type, pos = line.split('|')
+                name = objectName(name)
+                type = objectType(type)
 
-                x, y = pos.split('x')
-                x, y = int(x), int(y)
+                tileX, tileY = pos.split('x')
+                tileX, tileY = int(tileX), int(tileY)
+                x,y = tileX * self.tileWidth, tileY * self.tileHeight
                 #w, h = img[name].get_width(), img[name].get_height()
                 w, h = 0, 1
 
@@ -84,17 +88,17 @@ class MapManager:
 
                 obj = None
 
-                if type == objectType.GAME_OBJECT.value:
-                    obj = gameObjects.GameObject(name, type, x, y, w, h)
+                if type == objectType.GAME_OBJECT:
+                    obj = gameObjects.GameObject(name, type, x, y, tileX, tileY, w, h)
 
-                elif type == objectType.NINJA.value:
-                    obj = gameObjects.Ninja(name, type, x, y, w, h)
+                elif type == objectType.NINJA:
+                    obj = gameObjects.Ninja(name, type, x, y, tileX, tileY, w, h)
 
-                elif type == objectType.PLAYER.value:
-                    obj = gameObjects.Player(name, type, x, y, w, h)
+                elif type == objectType.PLAYER:
+                    obj = gameObjects.Player(name, type, x, y, tileX, tileY, w, h)
 
-                elif type == objectType.TRAP.value:
-                    obj = gameObjects.Trap(name, type, x, y, w, h)
+                elif type == objectType.TRAP:
+                    obj = gameObjects.Trap(name, type, x, y, tileX, tileY, w, h)
 
                 if obj is not None:
                     self.objects[name] = obj

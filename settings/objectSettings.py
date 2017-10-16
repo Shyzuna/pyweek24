@@ -1,44 +1,57 @@
-from objects.enums import ObjectName as objectType
+from objects.enums import ObjectName
+import os
+import settings.settings as settings
 
 objectProperties = {
-    objectType.BOX: {
+    ObjectName.BOX: {
         'isThrowable': False,
         'isMovable': True,
-        'isClimbable': False
+        'isClimbable': False,
+        'imgPath': os.path.join(settings.OBJECTS_PATH, "box.png"),
+        'imgRatio': 2
     },
-    objectType.WALL: {
+    ObjectName.WALL: {
         'isThrowable': False,
         'isMovable': False,
         'isClimbable': False
     },
-    objectType.LADDER: {
+    ObjectName.LADDER: {
         'isThrowable': False,
         'isMovable': False,
         'isClimbable': True
     },
-    objectType.BALL: {
+    ObjectName.BALL: {
         'isThrowable': True,
         'isMovable': False,
         'isClimbable': False
     },
-    objectType.SPIKES: {
+    ObjectName.SPIKES: {
         'isThrowable': False,
         'isMovable': False,
         'isClimbable': False
     },
-    objectType.SAW: {
+    ObjectName.SAW: {
         'isThrowable': False,
         'isMovable': False,
         'isClimbable': False
     },
-    objectType.ACID: {
+    ObjectName.ACID: {
         'isThrowable': False,
         'isMovable': False,
         'isClimbable': False
     },
-    objectType.NINJA: {
+    ObjectName.NINJA: {
         'isThrowable': False,
         'isMovable': False,
-        'isClimbable': False
+        'isClimbable': False,
+        'imgPath': os.path.join(settings.CHARACTERS_PATH, "Ninja.png"),
+        'imgRatio': 1
+    },
+    ObjectName.PLAYER: {
+        'isThrowable': False,
+        'isMovable': False,
+        'isClimbable': False,
+        'imgPath': os.path.join(settings.CHARACTERS_PATH, "Player.png"),
+        'imgRatio': 1
     }
 }

@@ -44,7 +44,8 @@ class GameManager(object):
         displayManager.init()
         guiManager.init()
         mapManager.load('test.map',[])
-        displayManager.loadTiles(mapManager.tileWidth,mapManager.tileHeight)
+        displayManager.loadTilesImg(mapManager.tileWidth,mapManager.tileHeight)
+        displayManager.loadObjectsImg(mapManager)
 
     import os
 
@@ -107,7 +108,7 @@ class GameManager(object):
 
     def gameLoop(self):
         # TODO: Test si l'on est en mouvement pour éviter de lancer pour rien
-        scrollManager.checkPlayerPosition(mapManager)
+        #scrollManager.checkPlayerPosition(mapManager)
         inputManager.handleEvents(guiManager,displayManager)
         displayManager.display(mapManager)
 

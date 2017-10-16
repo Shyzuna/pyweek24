@@ -6,6 +6,9 @@ IMGS_PATH = os.path.join('data', 'imgs')
 TILES_PATH = os.path.join(IMGS_PATH, 'tiles')
 BG_PATH = os.path.join(IMGS_PATH, 'background')
 MENU_PATH = os.path.join(IMGS_PATH, 'menu')
+OBJECTS_PATH = os.path.join(IMGS_PATH, 'objects')
+CHARACTERS_PATH = os.path.join(IMGS_PATH, 'characters')
+TRAPS_PATH = os.path.join(IMGS_PATH, 'traps')
 
 # Display
 SCREEN_WIDTH = 1200
