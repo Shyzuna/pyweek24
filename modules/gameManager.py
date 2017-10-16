@@ -46,6 +46,36 @@ class GameManager(object):
         mapManager.load('test.map',[])
         displayManager.loadTiles(mapManager.tileWidth,mapManager.tileHeight)
 
+    import os
+
+    # Path
+    MAPS_PATH = os.path.join('data', 'maps')
+    IMGS_PATH = os.path.join('data', 'imgs')
+    TILES_PATH = os.path.join(IMGS_PATH, 'tiles')
+    BG_PATH = os.path.join(IMGS_PATH, 'background')
+    MENU_PATH = os.path.join(IMGS_PATH, 'menu')
+
+    # Display
+    SCREEN_WIDTH = 1200
+    SCREEN_HEIGHT = 800
+    FPS = 60
+
+    # Number of tiles to display
+    TILES_TO_DISPLAY_WIDTH = 2
+    TILES_TO_DISPLAY_HEIGHT = 2
+
+    # Delta number of tiles
+    DELTA_TILES_TO_DISPLAY_WIDTH = 2
+    DELTA_TILES_TO_DISPLAY_HEIGHT = 2
+
+    # Scroll zone (in pixels)
+    SCROLL_ZONE = 2
+
+    # Important
+    GAME_TITLE = "Beyond the game"
+
+    # Other
+    DATA_DELIMITER = '------'
     def start(self):
         """
         Start the menu, then the game or quit
