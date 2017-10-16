@@ -5,8 +5,8 @@ MAPS_PATH = os.path.join('data', 'maps')
 IMGS_PATH = os.path.join('data', 'imgs')
 
 # Display
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 800
 FPS = 60
 
 # Number of tiles to display

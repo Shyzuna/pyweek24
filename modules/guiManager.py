@@ -58,6 +58,22 @@ class GUIManager(object):
             # TODO RATIO IN SETTINGS
             self.menuBg.append(pygame.transform.scale(img,(64,64)))
 
+        # Create the background surface
+        self.bg = pygame.Surface(self.screen.get_size())
+        startX,startY = -10,-10
+        screenW,screenH = self.screen.get_size()
+        bgW,bgH = self.menuBg[0].get_size()
+        j = 0
+        while(startY < screenH):
+             i = 0 if (j % 2) == 0 else 3
+             while (startX < screenW):
+                 self.bg.blit(self.menuBg[i],(startX,startY))
+                 i = (i+2) % 4
+                 startX += bgW
+             startY += bgH
+             startX = -10
+             j += 1
+
         # TODO larger image and apply ration
         self.title = pygame.image.load(os.path.join(settings.IMGS_PATH, "title.png"))
 
@@ -68,6 +84,15 @@ class GUIManager(object):
             pygame.image.load(os.path.join(settings.IMGS_PATH, "options.png")),
             pygame.image.load(os.path.join(settings.IMGS_PATH, "quitter.png"))
         ]
+
+        # Compute height interval
+        i = 1
+        totalH = self.title.get_size()[1]
+        for button in self.buttons:
+            buttonW,buttonH = button.get_size()
+            totalH += buttonH
+            i += 1
+        self.interH = (self.screen.get_size()[1] - totalH) / (i+1)
 
         # Default values
         self.currentButton = 0
@@ -86,47 +111,29 @@ class GUIManager(object):
         Display menu elements
         :return: Nothing
         """
-        # TODO move position computing in init
 
         # Clear screen
         self.screen.fill(Colors.BLACK.value)
 
+        screenW, screenH = self.screen.get_size()
+
         # Display BG
-        startX,startY = -10,-10
-        screenW,screenH = self.screen.get_size()
-        bgW,bgH = self.menuBg[0].get_size()
-        j = 0
-        while(startY < screenH):
-            i = 0 if (j % 2) == 0 else 3
-            while (startX < screenW):
-                self.screen.blit(self.menuBg[i],(startX,startY))
-                i = (i+2) % 4
-                startX += bgW
-            startY += bgH
-            startX = -10
-            j += 1
+        self.screen.blit(self.bg,(0,0))
 
         # Display title
         titleW,titleH = self.title.get_size()
         posX = (screenW - titleW) / 2
-        # Compute height interval
-        i = 1
-        totalH = titleH
-        for button in self.buttons:
-            buttonW,buttonH = button.get_size()
-            totalH += buttonH
-            i += 1
-        interH = (screenH - totalH) / (i+1)
-        posY = interH
+        posY = self.interH
         self.screen.blit(self.title,(posX,posY))
-        posY += titleH + interH
+        posY += titleH + self.interH
 
         # TODO smth better for the mark ?
         # Display button + selected mark
-        posX = (screenW - buttonW) / 2
         i = 0
         highlightSize = 4
         for button in self.buttons:
+            buttonW, buttonH = button.get_size()
+            posX = (screenW - buttonW) / 2
             if self.currentButton == i:
                 rect = button.get_rect()
                 rect.width += highlightSize * 2
@@ -135,7 +142,7 @@ class GUIManager(object):
                 pygame.draw.rect(selected,Colors.YELLOW.value,rect)
                 self.screen.blit(selected, (posX - highlightSize, posY - highlightSize))
             self.screen.blit(button, (posX, posY))
-            posY += button.get_size()[1] + interH
+            posY += button.get_size()[1] + self.interH
             i += 1
 
         # Update screen
