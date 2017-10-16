@@ -27,7 +27,7 @@ class GUIManager(object):
         Nothing much to do here
         :return: Nothing
         """
-
+        pass
 
     def init(self):
         """

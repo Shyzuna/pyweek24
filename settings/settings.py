@@ -7,6 +7,7 @@ IMGS_PATH = os.path.join('data', 'imgs')
 # Display
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
+FPS = 60
 
 # Number of tiles to display
 TILES_TO_DISPLAY = 2

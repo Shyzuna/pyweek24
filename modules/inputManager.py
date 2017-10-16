@@ -22,6 +22,7 @@ class InputManager(object):
         Not much to do here currently
         :return: Nothing
         """
+        pass
 
     def handleEvents(self):
         """
