@@ -52,7 +52,7 @@ class GUIManager(object):
         ratio = settings.SCREEN_WIDTH / settings.SCREEN_HEIGHT
 
         for i in range(0,4):
-            img = pygame.image.load(os.path.join(settings.IMGS_PATH, "BGTile" + str(i) + ".png"))
+            img = pygame.image.load(os.path.join(settings.BG_PATH, str(i) + ".png"))
             currentW,currentH = img.get_size()
             # Reduce size of all images
             # TODO RATIO IN SETTINGS
@@ -75,14 +75,14 @@ class GUIManager(object):
              j += 1
 
         # TODO larger image and apply ration
-        self.title = pygame.image.load(os.path.join(settings.IMGS_PATH, "title.png"))
+        self.title = pygame.image.load(os.path.join(settings.MENU_PATH, "title.png"))
 
         # Loading buttons
         # TODO larger image and apply ration
         self.buttons = [
-            pygame.image.load(os.path.join(settings.IMGS_PATH, "jouer.png")),
-            pygame.image.load(os.path.join(settings.IMGS_PATH, "options.png")),
-            pygame.image.load(os.path.join(settings.IMGS_PATH, "quitter.png"))
+            pygame.image.load(os.path.join(settings.MENU_PATH, "jouer.png")),
+            pygame.image.load(os.path.join(settings.MENU_PATH, "options.png")),
+            pygame.image.load(os.path.join(settings.MENU_PATH, "quitter.png"))
         ]
 
         # Compute height interval

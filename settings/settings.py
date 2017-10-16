@@ -3,6 +3,9 @@ import os
 # Path
 MAPS_PATH = os.path.join('data', 'maps')
 IMGS_PATH = os.path.join('data', 'imgs')
+TILES_PATH = os.path.join(IMGS_PATH, 'tiles')
+BG_PATH = os.path.join(IMGS_PATH, 'background')
+MENU_PATH = os.path.join(IMGS_PATH, 'menu')
 
 # Display
 SCREEN_WIDTH = 1200
@@ -10,7 +13,7 @@ SCREEN_HEIGHT = 800
 FPS = 60
 
 # Number of tiles to display
-TILES_TO_DISPLAY = 2
+TILES_TO_DISPLAY = 16
 
 # Scroll zone (in pixels)
 SCROLL_ZONE= 2

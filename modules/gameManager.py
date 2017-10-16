@@ -44,6 +44,7 @@ class GameManager(object):
         displayManager.init()
         guiManager.init()
         mapManager.load('test.map',[])
+        displayManager.loadTiles(mapManager.tileWidth,mapManager.tileHeight)
 
     def start(self):
         """
@@ -78,6 +79,6 @@ class GameManager(object):
         # TODO: Test si l'on est en mouvement pour éviter de lancer pour rien
         scrollManager.checkPlayerPosition(mapManager)
         inputManager.handleEvents(guiManager,displayManager)
-        displayManager.display()
+        displayManager.display(mapManager)
 
 gameManager = GameManager()
