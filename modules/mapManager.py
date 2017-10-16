@@ -20,8 +20,15 @@ class MapManager:
         self.dialogs = []
 
         self.displayedTiles = []
-        self.startTile = 4
-        self.isAnEnd = False
+        self.startTileX = settings.DELTA_TILES_TO_DISPLAY_X
+        self.startTileY = settings.DELTA_TILES_TO_DISPLAY_Y
+        self.totalTilesToDisplayX = 0
+        self.totalTilesToDisplayY = 0
+        self.isAnEndX = False
+        self.isAnEndY = False
+
+        self.currentOffsetX = 0
+        self.currentOffsetY = 0
 
     def load(self, name, img):
         """
@@ -100,6 +107,16 @@ class MapManager:
 
             print(objectType.GAME_OBJECT.value)
 
+        # Compute tiles to display
+        settings.TILES_TO_DISPLAY_X = int(settings.SCREEN_WIDTH / self.tileWidth)
+        settings.TILES_TO_DISPLAY_Y = int(settings.SCREEN_HEIGHT / self.tileHeight)
+
+        self.totalTilesToDisplayX = settings.TILES_TO_DISPLAY_X + settings.DELTA_TILES_TO_DISPLAY_X
+        self.totalTilesToDisplayY = settings.TILES_TO_DISPLAY_Y + settings.DELTA_TILES_TO_DISPLAY_Y
+
+        print("Tile to display X: " + str(settings.TILES_TO_DISPLAY_X))
+        print("Tile to display Y: " + str(settings.TILES_TO_DISPLAY_Y))
+
         # Displayed tiles computation
         self.computeDisplayedTiles()
 
@@ -107,17 +124,49 @@ class MapManager:
         """
         Moves starting index of displayed tiles to the right
         """
-        if self.startTile < self.width - 1:
-            self.startTile += 1
-            self.computeDisplayedTiles()
+
+        if self.currentOffsetX < (settings.TILES_TO_DISPLAY_X - 1) * self.tileWidth:
+            self.currentOffsetX += settings.SCROLL_SPEED
+        elif self.startTileX < self.width - self.totalTilesToDisplayX:
+                self.startTileX += 1
+                self.computeDisplayedTiles()
+                self.currentOffsetX = 0
 
     def goToLeft(self):
         """
         Moves starting index of displayed tiles to the left
         """
-        if self.startTile > 0:
-            self.startTile -= 1
+
+        if self.currentOffsetX > -(settings.TILES_TO_DISPLAY_X - 1) * self.tileWidth:
+            self.currentOffsetX -= settings.SCROLL_SPEED
+        elif self.startTileX > settings.DELTA_TILES_TO_DISPLAY_X:
+            self.startTileX -= 1
             self.computeDisplayedTiles()
+            self.currentOffsetX = 0
+
+    def goUp(self):
+        """
+        Moves starting index of displayed tiles up
+        """
+
+        if self.currentOffsetY > -(settings.TILES_TO_DISPLAY_Y - 1) * self.tileHeight:
+            self.currentOffsetY -= settings.SCROLL_SPEED
+        elif self.startTileY > settings.DELTA_TILES_TO_DISPLAY_Y:
+            self.startTileY -= 1
+            self.computeDisplayedTiles()
+            self.currentOffsetY = 0
+
+    def goDown(self):
+        """
+        Moves starting index of displayed tiles up
+        """
+
+        if self.currentOffsetY < (settings.TILES_TO_DISPLAY_Y - 1) * self.tileHeight:
+            self.currentOffsetY += settings.SCROLL_SPEED
+        elif self.startTileY < self.height - self.totalTilesToDisplayY:
+                self.startTileY += 1
+                self.computeDisplayedTiles()
+                self.currentOffsetX = 0
 
     def computeDisplayedTiles(self):
         """
@@ -126,32 +175,18 @@ class MapManager:
         """
 
         self.displayedTiles = []
+        cutLeft = self.startTileX - settings.DELTA_TILES_TO_DISPLAY_X
+        cutRight = self.startTileX + self.totalTilesToDisplayX
+        cutUp = self.startTileY - settings.DELTA_TILES_TO_DISPLAY_Y
+        cutDown = self.startTileY+ self.totalTilesToDisplayY
 
-        # Left limit
-        if self.startTile < settings.TILES_TO_DISPLAY and not self.isAnEnd:
-            print('Left')
-            for tilesLine in self.tiles:
-                self.displayedTiles.append(tilesLine[:settings.TILES_TO_DISPLAY])
-
-            self.isAnEnd = True
-
-        # Right limit
-        elif self.startTile  > (self.width - settings.TILES_TO_DISPLAY):
-            print('Right')
-            for tilesLine in self.tiles:
-                self.displayedTiles.append(tilesLine[-settings.TILES_TO_DISPLAY:])
-
-            self.isAnEnd = True
-
-        # Middle of the map
-        else:
-            print('Middle')
-            for tilesLine in self.tiles:
-                self.displayedTiles.append(tilesLine[self.startTile:self.startTile + settings.TILES_TO_DISPLAY])
-
-            self.isAnEnd = False
-
-        print(self.startTile)
+        #self.displayedTiles = self.tiles[cutLeft:cutRight, cutUp:cutDown]
+        print("left : " + str(cutLeft))
+        print("right : " + str(cutRight))
+        print("up : " + str(cutUp))
+        print("down : " + str(cutDown))
+        self.displayedTiles = [row[cutLeft:cutRight] for row in self.tiles[cutUp:cutDown]]
+        print(self.startTileX)
         print(self.displayedTiles)
 
 mapManager = MapManager()
