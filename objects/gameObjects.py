@@ -22,6 +22,7 @@ class GameObject:
         self.tileY = tileY
         self.width = width
         self.height = height
+        self.speed = 500
 
     def blit(self,screen,objectsImg):
         screen.blit(objectsImg[self.name], (self.x, self.y))

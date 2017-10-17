@@ -2,7 +2,7 @@
 Title: displayManager File
 Desc: Init the display / display ALL the stuff
 Creation Date: 15/10/17
-LastMod Date: 15/10/17
+LastMod Date: 16/10/17
 TODO:
 * LOOK FOR INIT FLAG (RESIZEABLE,FULLSCREEN...)
 """
@@ -61,7 +61,35 @@ class DisplayManager(object):
             except:
                 pass
 
+    def createMapSurface(self, mapManager):
+        """
+        Create the full map surface (See if it's worth ?)
+        :param mapManager:
+        :return: Nothing
+        """
+
+        self.mapSurface = pygame.Surface((mapManager.mapSizeX, mapManager.mapSizeY))
+        self.mapSurface.fill(Colors.WHITE.value)
+        tileW,tileH = mapManager.tileWidth,mapManager.tileHeight
+        startX = 0
+        startY = 0
+        for line in mapManager.tiles:
+            for tile in line:
+                if tile != '0':
+                    self.mapSurface.blit(self.tilesImg[tile],(startX,startY))
+                startX += tileW
+            startY += tileH
+            startX = 0
+
+    def createBackgroundSurface(self):
+        pass
+
     def loadObjectsImg(self,mapManager):
+        """
+        Load all images for objects and set width and height of them (maybe smwhere else ?)
+        :param mapManager:
+        :return: Nothing
+        """
         self.objectsImg = {}
         for object in mapManager.objects.values():
             print(object.name)
@@ -102,22 +130,11 @@ class DisplayManager(object):
         Display all elements
         :return: Nothing
         """
-
         # Clear screen
         self.screen.fill(Colors.WHITE.value)
 
-        # Display map
-        ## TODO: Should use offset
-        tileW,tileH = mapManager.tileWidth,mapManager.tileHeight
-        startX = mapManager.currentOffsetX
-        startY = mapManager.currentOffsetY
-        for line in mapManager.displayedTiles:
-            for tile in line:
-                if tile != '0':
-                    self.screen.blit(self.tilesImg[tile],(startX,startY))
-                startX += tileW
-            startY += tileH
-            startX = mapManager.currentOffsetX
+        # Display part of map
+        self.screen.blit(self.mapSurface,(0,0),mapManager.currentRect)
 
         for object in mapManager.objects.values():
             object.blit(self.screen,self.objectsImg)

@@ -1,9 +1,18 @@
+"""
+Title: scrollManager File
+Desc: Manage all the scrolling stuff
+Creation Date: 15/10/17
+LastMod Date: 15/10/17
+TODO:
+*
+"""
+
 import settings.settings as settings
 from objects.enums import ObjectName
 
 class ScrollManager:
     """
-
+    Handle scrolling of the map if player is in the scrolling zones
     """
 
     def __init__(self):
@@ -13,38 +22,51 @@ class ScrollManager:
         """
         pass
 
-    def checkPlayerPosition(self, map):
+    def isScrollNeeded(self, mapManager, player, distX, distY):
         """
-        Checks wether map need to be scrolled
-        :param map: map of the game
-        :return:
+        Calculate if we need to scroll the map
+        :param mapManager:
+        :param player:
+        :param distX:
+        :param distY:
+        :return: (distX,distY) if we need else None
         """
+        playerX = player.x + distX
+        playerY = player.y + distY
 
-        #print('Player pos : ' + str(map.objects[ObjectName.PLAYER].x) + ' ' + str(map.objects[ObjectName.PLAYER].y))
+        scrollX = 0
+        scrollY = 0
 
-        # TODO: To remove
-        if map.objects[ObjectName.PLAYER].x < settings.SCREEN_WIDTH - settings.SCROLL_ZONE_X + 50:
-            map.objects[ObjectName.PLAYER].x += 5
+        # TODO: Scrolling zone in percent ? param in settings or not ?
 
-        #if map.objects[ObjectName.PLAYER].x > settings.SCROLL_ZONE - 50:
-        #    map.objects[ObjectName.PLAYER].x -= 100
+        # Check if char in horizontal scrolling zone
+        if playerX < settings.SCROLL_ZONE_X:
+            # To avoid oposite scrolling bug
+            scrollX = -1 * abs(distX)
+        elif playerX > settings.SCREEN_WIDTH - settings.SCROLL_ZONE_X:
+            scrollX = abs(distX)
 
-        #if map.objects[ObjectName.PLAYER].x > settings.SCROLL_ZONE_Y - 50:
-        #    map.objects[ObjectName.PLAYER].x -= 100
+        # Check if char in vertical scrolling zone
+        if playerY < settings.SCROLL_ZONE_Y:
+            # To avoid oposite scrolling bug
+            scrollY = -1 * abs(distY)
+        elif playerY > settings.SCREEN_HEIGHT - settings.SCROLL_ZONE_Y:
+            scrollY = abs(distY)
 
-        #if map.objects[ObjectName.PLAYER].y < settings.SCREEN_HEIGHT - settings.SCROLL_ZONE_Y + 50:
-        #    map.objects[ObjectName.PLAYER].y += 100
+        # Check if overextend map values
+        if (mapManager.currentRect.x + distX) < 0:
+            distX = -1 * mapManager.currentRect.x
+        elif (mapManager.currentRect.x + distX) > (mapManager.mapSizeX - settings.SCREEN_WIDTH):
+            distX = (mapManager.mapSizeX - settings.SCREEN_WIDTH) - mapManager.currentRect.x
+        if (mapManager.currentRect.y + distY) < 0:
+            distY = mapManager.currentRect.y
+        elif (mapManager.currentRect.y + distY) > (mapManager.mapSizeY - settings.SCREEN_HEIGHT):
+            distY = (mapManager.mapSizeY - settings.SCREEN_HEIGHT) - mapManager.currentRect.y
 
-        if map.objects[ObjectName.PLAYER].x < settings.SCROLL_ZONE_X and map.startTileX > settings.DELTA_TILES_TO_DISPLAY_X:
-            map.goToLeft()
-        elif map.objects[ObjectName.PLAYER].x > settings.SCREEN_WIDTH - settings.SCROLL_ZONE_X:
-            map.goToRight()
-
-        if map.objects[ObjectName.PLAYER].y < settings.SCROLL_ZONE_Y:
-            map.goUp()
-        elif map.objects[ObjectName.PLAYER].y > settings.SCREEN_HEIGHT - settings.SCROLL_ZONE_Y:
-            map.goDown()
-
+        if scrollX == 0 and scrollY == 0:
+            return 0
+        else:
+            return scrollX,scrollY
 
 scrollManager = ScrollManager()
 

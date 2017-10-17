@@ -29,13 +29,23 @@ class GameManager(object):
     """
     def __init__(self):
         """
-        Nothing much to do currently
+        Init clock / FPS / manager list
         :return: Nothing
         """
         self.done = False
         self.clock = pygame.time.Clock()
         self.fps = settings.FPS
         self.showFps = True
+
+        self.managerList = {
+            "displayManager": displayManager,
+            "inputManager": inputManager,
+            "guiManager": guiManager,
+            "mapManager": mapManager,
+            "scrollManager": scrollManager,
+            "physicsManager": physicsManager,
+        }
+
 
     def init(self):
         """
@@ -47,6 +57,7 @@ class GameManager(object):
         mapManager.load('test.map',[])
         displayManager.loadTilesImg(mapManager.tileWidth,mapManager.tileHeight)
         displayManager.loadObjectsImg(mapManager)
+        displayManager.createMapSurface(mapManager)
 
     def start(self):
         """
@@ -72,16 +83,23 @@ class GameManager(object):
                 pygame.display.set_caption(str(round(self.clock.get_fps(),2)) + " - " + settings.GAME_TITLE)
 
     def menuLoop(self):
+        """
+        Loop for the menu
+        :return: Noothing
+        """
         inputManager.handleMenuEvents(guiManager,displayManager)
         if guiManager.startGame:
             self.done = True
         guiManager.displayMenu()
 
     def gameLoop(self):
-        # TODO: Test si l'on est en mouvement pour éviter de lancer pour rien
-        scrollManager.checkPlayerPosition(mapManager)
+        """
+        Loop for the game
+        :return: Nothing
+        """
         inputManager.handleEvents(guiManager, displayManager)
-        physicsManager.applyGravity(mapManager, self.deltaTime)
+        inputManager.applyPlayerMoveEvents(self.managerList, self.deltaTime)
+        physicsManager.applyGravity(mapManager, scrollManager, self.deltaTime)
         displayManager.display(mapManager)
 
 gameManager = GameManager()

@@ -1,4 +1,14 @@
+"""
+Title: mapManager File
+Desc: Manage the map loading and scrolling and other objects
+Creation Date: 15/10/17
+LastMod Date: 16/10/17
+TODO:
+*
+"""
+
 import os
+import pygame
 
 from objects.enums import ObjectType as objectType
 from objects.enums import ObjectName as objectName
@@ -6,6 +16,13 @@ import objects.gameObjects as gameObjects
 import settings.settings as settings
 
 class MapManager:
+    """
+    This manager is all about the map stuff :
+        * Loading
+        * Moving map for scrolling
+    /!\ Should be instantiate once only
+    """
+
     def __init__(self):
         """
         Constructor
@@ -15,20 +32,12 @@ class MapManager:
         self.height = 0
         self.tileWidth = 0
         self.tileHeight = 0
+        self.mapSizeX = 0
+        self.mapSizeY = 0
         self.objects = {}
         self.tiles = []
         self.dialogs = []
-
-        self.displayedTiles = []
-        self.startTileX = settings.DELTA_TILES_TO_DISPLAY_X
-        self.startTileY = settings.DELTA_TILES_TO_DISPLAY_Y
-        self.totalTilesToDisplayX = 0
-        self.totalTilesToDisplayY = 0
-        self.isAnEndX = False
-        self.isAnEndY = False
-
-        self.currentOffsetX = 0
-        self.currentOffsetY = 0
+        self.currentRect = pygame.Rect(0, 0, settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT)
 
     def load(self, name, img):
         """
@@ -50,6 +59,10 @@ class MapManager:
             tileWidth, tileHeight = line.split('x')
             self.tileWidth = int(tileWidth)
             self.tileHeight = int(tileHeight)
+
+            # Total size of map in pixel
+            self.mapSizeX = self.width * self.tileWidth
+            self.mapSizeY = self.height * self.tileHeight
 
             # Tiles
             print("tiles")
@@ -107,86 +120,15 @@ class MapManager:
 
             print(objectType.GAME_OBJECT.value)
 
-        # Compute tiles to display
-        settings.TILES_TO_DISPLAY_X = int(settings.SCREEN_WIDTH / self.tileWidth)
-        settings.TILES_TO_DISPLAY_Y = int(settings.SCREEN_HEIGHT / self.tileHeight)
 
-        self.totalTilesToDisplayX = settings.TILES_TO_DISPLAY_X + settings.DELTA_TILES_TO_DISPLAY_X
-        self.totalTilesToDisplayY = settings.TILES_TO_DISPLAY_Y + settings.DELTA_TILES_TO_DISPLAY_Y
-
-        print("Tile to display X: " + str(settings.TILES_TO_DISPLAY_X))
-        print("Tile to display Y: " + str(settings.TILES_TO_DISPLAY_Y))
-
-        # Displayed tiles computation
-        self.computeDisplayedTiles()
-
-    def goToRight(self):
+    def scrollMap(self, scrollValue):
         """
-        Moves starting index of displayed tiles to the right
+        Try to scroll the map by scrollValue if possible
+        :param scrollValue:
+        :return: Nothing
         """
-
-        if self.currentOffsetX > -self.tileWidth:
-            self.currentOffsetX -= settings.SCROLL_SPEED
-        elif self.startTileX < self.width - self.totalTilesToDisplayX:
-                self.startTileX += 1
-                self.computeDisplayedTiles()
-                self.currentOffsetX = 0
-
-    def goToLeft(self):
-        """
-        Moves starting index of displayed tiles to the left
-        """
-
-        if self.currentOffsetX < self.tileWidth:
-            self.currentOffsetX += settings.SCROLL_SPEED
-        elif self.startTileX > settings.DELTA_TILES_TO_DISPLAY_X:
-            self.startTileX -= 1
-            self.computeDisplayedTiles()
-            self.currentOffsetX = 0
-
-    def goUp(self):
-        """
-        Moves starting index of displayed tiles up
-        """
-
-        if self.currentOffsetY < self.tileHeight:
-            self.currentOffsetY += settings.SCROLL_SPEED
-        elif self.startTileY > settings.DELTA_TILES_TO_DISPLAY_Y:
-            self.startTileY -= 1
-            self.computeDisplayedTiles()
-            self.currentOffsetY = 0
-
-    def goDown(self):
-        """
-        Moves starting index of displayed tiles up
-        """
-
-        if self.currentOffsetY > -self.tileHeight:
-            self.currentOffsetY -= settings.SCROLL_SPEED
-        elif self.startTileY < self.height - self.totalTilesToDisplayY:
-                self.startTileY += 1
-                self.computeDisplayedTiles()
-                self.currentOffsetX = 0
-
-    def computeDisplayedTiles(self):
-        """
-        Computes tiles to display
-
-        """
-
-        self.displayedTiles = []
-        cutLeft = self.startTileX - settings.DELTA_TILES_TO_DISPLAY_X
-        cutRight = self.startTileX + self.totalTilesToDisplayX
-        cutUp = self.startTileY - settings.DELTA_TILES_TO_DISPLAY_Y
-        cutDown = self.startTileY+ self.totalTilesToDisplayY
-
-        print("left : " + str(cutLeft))
-        print("right : " + str(cutRight))
-        print("up : " + str(cutUp))
-        print("down : " + str(cutDown))
-        self.displayedTiles = [row[cutLeft:cutRight] for row in self.tiles[cutUp:cutDown]]
-        print(self.startTileX)
-        print(self.displayedTiles)
+        self.currentRect.x += scrollValue[0]
+        self.currentRect.y += scrollValue[1]
 
 mapManager = MapManager()
 
