@@ -125,8 +125,8 @@ class MapManager:
         Moves starting index of displayed tiles to the right
         """
 
-        if self.currentOffsetX < (settings.TILES_TO_DISPLAY_X - 1) * self.tileWidth:
-            self.currentOffsetX += settings.SCROLL_SPEED
+        if self.currentOffsetX > -self.tileWidth:
+            self.currentOffsetX -= settings.SCROLL_SPEED
         elif self.startTileX < self.width - self.totalTilesToDisplayX:
                 self.startTileX += 1
                 self.computeDisplayedTiles()
@@ -137,8 +137,8 @@ class MapManager:
         Moves starting index of displayed tiles to the left
         """
 
-        if self.currentOffsetX > -(settings.TILES_TO_DISPLAY_X - 1) * self.tileWidth:
-            self.currentOffsetX -= settings.SCROLL_SPEED
+        if self.currentOffsetX < self.tileWidth:
+            self.currentOffsetX += settings.SCROLL_SPEED
         elif self.startTileX > settings.DELTA_TILES_TO_DISPLAY_X:
             self.startTileX -= 1
             self.computeDisplayedTiles()
@@ -149,8 +149,8 @@ class MapManager:
         Moves starting index of displayed tiles up
         """
 
-        if self.currentOffsetY > -(settings.TILES_TO_DISPLAY_Y - 1) * self.tileHeight:
-            self.currentOffsetY -= settings.SCROLL_SPEED
+        if self.currentOffsetY < self.tileHeight:
+            self.currentOffsetY += settings.SCROLL_SPEED
         elif self.startTileY > settings.DELTA_TILES_TO_DISPLAY_Y:
             self.startTileY -= 1
             self.computeDisplayedTiles()
@@ -161,8 +161,8 @@ class MapManager:
         Moves starting index of displayed tiles up
         """
 
-        if self.currentOffsetY < (settings.TILES_TO_DISPLAY_Y - 1) * self.tileHeight:
-            self.currentOffsetY += settings.SCROLL_SPEED
+        if self.currentOffsetY > -self.tileHeight:
+            self.currentOffsetY -= settings.SCROLL_SPEED
         elif self.startTileY < self.height - self.totalTilesToDisplayY:
                 self.startTileY += 1
                 self.computeDisplayedTiles()
@@ -180,7 +180,6 @@ class MapManager:
         cutUp = self.startTileY - settings.DELTA_TILES_TO_DISPLAY_Y
         cutDown = self.startTileY+ self.totalTilesToDisplayY
 
-        #self.displayedTiles = self.tiles[cutLeft:cutRight, cutUp:cutDown]
         print("left : " + str(cutLeft))
         print("right : " + str(cutRight))
         print("up : " + str(cutUp))

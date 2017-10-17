@@ -27,7 +27,7 @@ DELTA_TILES_TO_DISPLAY_Y = 1
 SCROLL_ZONE_X = 400
 SCROLL_ZONE_Y = 200
 # Scroll speed
-SCROLL_SPEED = 100
+SCROLL_SPEED = 1
 
 # Important
 GAME_TITLE = "Beyond the game"

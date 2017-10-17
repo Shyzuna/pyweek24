@@ -24,7 +24,7 @@ class ScrollManager:
 
         # TODO: To remove
         if map.objects[ObjectName.PLAYER].x < settings.SCREEN_WIDTH - settings.SCROLL_ZONE_X + 50:
-            map.objects[ObjectName.PLAYER].x += 100
+            map.objects[ObjectName.PLAYER].x += 5
 
         #if map.objects[ObjectName.PLAYER].x > settings.SCROLL_ZONE - 50:
         #    map.objects[ObjectName.PLAYER].x -= 100
@@ -35,7 +35,7 @@ class ScrollManager:
         #if map.objects[ObjectName.PLAYER].y < settings.SCREEN_HEIGHT - settings.SCROLL_ZONE_Y + 50:
         #    map.objects[ObjectName.PLAYER].y += 100
 
-        if map.objects[ObjectName.PLAYER].x < settings.SCROLL_ZONE_X:
+        if map.objects[ObjectName.PLAYER].x < settings.SCROLL_ZONE_X and map.startTileX > settings.DELTA_TILES_TO_DISPLAY_X:
             map.goToLeft()
         elif map.objects[ObjectName.PLAYER].x > settings.SCREEN_WIDTH - settings.SCROLL_ZONE_X:
             map.goToRight()

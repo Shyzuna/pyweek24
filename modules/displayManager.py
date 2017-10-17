@@ -109,15 +109,15 @@ class DisplayManager(object):
         # Display map
         ## TODO: Should use offset
         tileW,tileH = mapManager.tileWidth,mapManager.tileHeight
-        startX = 0
-        startY = 0
+        startX = mapManager.currentOffsetX
+        startY = mapManager.currentOffsetY
         for line in mapManager.displayedTiles:
             for tile in line:
                 if tile != '0':
                     self.screen.blit(self.tilesImg[tile],(startX,startY))
                 startX += tileW
             startY += tileH
-            startX = 0
+            startX = mapManager.currentOffsetX
 
         for object in mapManager.objects.values():
             object.blit(self.screen,self.objectsImg)
