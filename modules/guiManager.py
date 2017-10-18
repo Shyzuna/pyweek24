@@ -122,7 +122,7 @@ class GUIManager(object):
         screenW, screenH = self.screen.get_size()
 
         # Display BG
-        self.screen.blit(self.bg,(0,0))
+        self.screen.blit(self.bg, (0, 0))
 
         # Display title
         titleW,titleH = self.title.get_size()

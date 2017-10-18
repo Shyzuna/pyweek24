@@ -100,6 +100,6 @@ class GameManager(object):
         inputManager.handleEvents(guiManager, displayManager)
         inputManager.applyPlayerMoveEvents(self.managerList, self.deltaTime)
         physicsManager.applyGravity(mapManager, scrollManager, self.deltaTime)
-        displayManager.display(mapManager)
+        displayManager.display(mapManager,guiManager)
 
 gameManager = GameManager()

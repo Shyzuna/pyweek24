@@ -61,6 +61,15 @@ class DisplayManager(object):
             except:
                 pass
 
+
+        self.menuBg = []
+        for i in range(0,4):
+            img = pygame.image.load(os.path.join(settings.BG_PATH, str(i) + ".png"))
+            currentW,currentH = img.get_size()
+            # Reduce size of all images
+            # TODO RATIO IN SETTINGS
+            self.menuBg.append(pygame.transform.scale(img,(64,64)))
+
     def createMapSurface(self, mapManager):
         """
         Create the full map surface (See if it's worth ?)
@@ -70,6 +79,23 @@ class DisplayManager(object):
 
         self.mapSurface = pygame.Surface((mapManager.mapSizeX, mapManager.mapSizeY))
         self.mapSurface.fill(Colors.WHITE.value)
+
+        # SET BG
+        startX,startY = -10,-10
+        screenW,screenH = self.screen.get_size()
+        bgW,bgH = self.menuBg[0].get_size()
+        j = 0
+        while(startY <  mapManager.mapSizeY):
+             i = 0 if (j % 2) == 0 else 3
+             while (startX < mapManager.mapSizeX):
+                 self.mapSurface.blit(self.menuBg[i],(startX,startY))
+                 i = (i+2) % 4
+                 startX += bgW
+             startY += bgH
+             startX = -10
+             j += 1
+
+        # Set Map
         tileW,tileH = mapManager.tileWidth,mapManager.tileHeight
         startX = 0
         startY = 0
@@ -80,9 +106,6 @@ class DisplayManager(object):
                 startX += tileW
             startY += tileH
             startX = 0
-
-    def createBackgroundSurface(self):
-        pass
 
     def loadObjectsImg(self,mapManager):
         """
@@ -125,7 +148,7 @@ class DisplayManager(object):
         """
         pygame.display.quit()
 
-    def display(self,mapManager):
+    def display(self,mapManager,guiManager):
         """
         Display all elements
         :return: Nothing
@@ -134,7 +157,7 @@ class DisplayManager(object):
         self.screen.fill(Colors.WHITE.value)
 
         # Display part of map
-        self.screen.blit(self.mapSurface,(0,0),mapManager.currentRect)
+        self.screen.blit(self.mapSurface, (0, 0), mapManager.currentRect)
 
         for object in mapManager.objects.values():
             object.blit(self.screen,self.objectsImg)
