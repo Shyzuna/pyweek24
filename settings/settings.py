@@ -26,3 +26,6 @@ GAME_TITLE = "Beyond the game"
 
 # Other
 DATA_DELIMITER = '------'
+
+MAX_VELOCITY_X = 300
+MAX_VELOCITY_Y = 200

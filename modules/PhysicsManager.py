@@ -22,7 +22,7 @@ class PhysicsManager(object):
         self.gravity = 500
         self.nonBlockingTiles = ['0']
 
-    def applyGravity(self, mapManager, scrollManager, deltaTime):
+    def applyGravity(self, mapManager):
         """
         Apply gravity on all objects with scrolling handling for player
         :param mapManager:
@@ -30,21 +30,48 @@ class PhysicsManager(object):
         :param deltaTime:
         :return: Nothing
         """
-        gravitySpeed = (self.gravity * deltaTime) / 1000
-        for object in mapManager.objects.values():
-            if self.checkCollision(mapManager,object,0,gravitySpeed):
-                if object.name == ObjectName.PLAYER:
-                    scrollValue = scrollManager.isScrollNeeded(mapManager, object, 0, gravitySpeed)
-                    if scrollValue:
-                        # Scroll Map
-                        mapManager.scrollMap(scrollValue)
-                    else:
-                        # Move player
-                        object.moveBy(0, gravitySpeed)
-                else:
-                    object.moveBy(0,gravitySpeed)
 
-    def checkCollision(self, mapManager, obj, distX, distY):
+        for object in mapManager.objects.values():
+            if(object.velocityY < self.gravity):
+                object.velocityY += self.gravity / 100
+
+    def computeVelocity(self, mapManager, scrollManager, deltaTime):
+        """
+        Apply gravity on all objects with scrolling handling for player
+        :param mapManager:
+        :param scrollManager:
+        :param deltaTime:
+        :return: Nothing
+        """
+
+        for object in mapManager.objects.values():
+            speedY = (object.velocityY * deltaTime) / 1000
+            speedX = (object.velocityX * deltaTime) / 1000
+
+            (checkX, checkY) = self.checkCollision(mapManager, object, speedX, speedY)
+
+            #if self.checkCollisionAndMoveObject(mapManager, object, speedX, speedY):
+
+                #object.velocityY += self.gravity
+
+            if checkX:
+                object.x += speedX
+
+            if checkY:
+                object.y += speedY
+
+                #if object.name == ObjectName.PLAYER:
+                #    scrollValue = scrollManager.isScrollNeeded(mapManager, object, 0, speedY)
+                #    if scrollValue:
+                        # Scroll Map
+                #        mapManager.scrollMap(scrollValue)
+                #    else:
+                        # Move player
+                        #object.moveBy(0, speedY)
+                #else:
+                 #   object.moveBy(0,speedY)
+
+    def checkCollision(self, mapManager, obj, speedX, speedY):
         """
         Check tile and object collision for an object
         :param mapManager:
@@ -54,15 +81,84 @@ class PhysicsManager(object):
         :return: True/False if can move or not
         """
         # Get future position on global map
-        newX = obj.x + distX + mapManager.currentRect.x
-        newY = obj.y + distY + mapManager.currentRect.y
-        # Check collision with tiles
-        return self.checkTileCollision(mapManager,obj,newX,newY)
+        newX = obj.x + speedX + mapManager.currentRect.x
+        newY = obj.y + speedY + mapManager.currentRect.y
+
+        topLeft = (newX, newY)
+        topRight = (newX + obj.width, newY)
+        bottomLeft = (newX, newY + obj.height)
+        bottomRight = (newX + obj.width, newY + obj.height)
+
+        top = [
+            topLeft,
+            topRight
+        ]
+
+        right = [
+            topRight,
+            bottomRight
+        ]
+
+        bottom = [
+            bottomLeft,
+            bottomRight
+        ]
+
+        left = [
+            topLeft,
+            bottomLeft
+        ]
+
+        cornerL = [
+            (newX, newY),
+            (newX + obj.width, newY),
+            (newX, newY + obj.height),
+            (newX + obj.width, newY + obj.height)
+        ]
+
+        checkX = True
+        checkY = True
+
+        # Falling
+        if (speedY > 0):
+            (chkX, chkY) = self.checkTileCollision(mapManager, obj, bottom, newX, newY, False)
+            if not chkX and checkX:
+                checkX = False
+
+            if not chkY and checkY:
+                checkY = False
+
+        # Jumping
+        else:
+            (chkX, chkY) = self.checkTileCollision(mapManager, obj, top, newX, newY, False)
+            if not chkX and checkX:
+                checkX = False
+
+            if not chkY and checkY:
+                checkY = False
+        # Right
+        if (speedX > 0):
+            (chkX, chkY) = self.checkTileCollision(mapManager, obj, right, newX, newY, True)
+            #if not chkX and checkX:
+            #    checkX = False
+
+            #if not chkY and checkY:
+            #    checkY = False
+        # Left
+        else:
+            (chkX, chkY) = self.checkTileCollision(mapManager, obj, left, newX, newY, True)
+            #if not chkX and checkX:
+            #    checkX = False
+
+            #if not chkY and checkY:
+            #    checkY = False
+
+        return (checkX, checkY)
 
         # Check collision with other obj
         # SOON
 
-    def checkTileCollision(self, mapManager, obj, newX, newY):
+    def checkTileCollision(self, mapManager, obj, corners, newX, newY, isXAxis):
         """
         Check tile collision of the object
         :param mapManager:
@@ -71,17 +167,22 @@ class PhysicsManager(object):
         :param newY:
         :return: True/False if can move or not
         """
-        cornerL = [
-            (newX,newY),
-            (newX + obj.width, newY),
-            (newX, newY + obj.height),
-            (newX + obj.width, newY + obj.height)
-        ]
-        for x,y in cornerL:
+
+        for x, y in corners:
+
             tileX = math.floor(x / mapManager.tileWidth)
             tileY = math.floor(y / mapManager.tileHeight)
+
+            if tileX >= mapManager.width or tileY >= mapManager.height:
+                return (False, False)
+
             if mapManager.tiles[tileY][tileX] not in self.nonBlockingTiles:
-                return False
-        return True
+                if isXAxis:
+                    return (False, True)
+                else:
+                    return (True, False)
+
+        print(newX, newY)
+        return (True, True)
 
 physicsManager = PhysicsManager()
