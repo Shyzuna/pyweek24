@@ -24,6 +24,7 @@ class GameObject:
         self.height = height
         self.velocityY = 0
         self.velocityX = 0
+        self.isOnGround = False
 
     def blit(self,screen,objectsImg):
         screen.blit(objectsImg[self.name], (self.x, self.y))

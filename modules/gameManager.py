@@ -87,7 +87,7 @@ class GameManager(object):
         Loop for the menu
         :return: Noothing
         """
-        inputManager.handleMenuEvents(guiManager,displayManager)
+        inputManager.handleMenuEvents(guiManager, displayManager)
         if guiManager.startGame:
             self.done = True
         guiManager.displayMenu()

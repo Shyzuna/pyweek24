@@ -50,26 +50,13 @@ class PhysicsManager(object):
 
             (checkX, checkY) = self.checkCollision(mapManager, object, speedX, speedY)
 
-            #if self.checkCollisionAndMoveObject(mapManager, object, speedX, speedY):
-
-                #object.velocityY += self.gravity
-
             if checkX:
                 object.x += speedX
 
             if checkY:
                 object.y += speedY
-
-                #if object.name == ObjectName.PLAYER:
-                #    scrollValue = scrollManager.isScrollNeeded(mapManager, object, 0, speedY)
-                #    if scrollValue:
-                        # Scroll Map
-                #        mapManager.scrollMap(scrollValue)
-                #    else:
-                        # Move player
-                        #object.moveBy(0, speedY)
-                #else:
-                 #   object.moveBy(0,speedY)
+            else:
+                object.isOnGround = True
 
     def checkCollision(self, mapManager, obj, speedX, speedY):
         """
@@ -136,22 +123,23 @@ class PhysicsManager(object):
 
             if not chkY and checkY:
                 checkY = False
+
         # Right
         if (speedX > 0):
             (chkX, chkY) = self.checkTileCollision(mapManager, obj, right, newX, newY, True)
-            #if not chkX and checkX:
-            #    checkX = False
+            if not chkX and checkX:
+                checkX = False
 
-            #if not chkY and checkY:
-            #    checkY = False
+            if not chkY and checkY:
+                checkY = False
         # Left
         else:
             (chkX, chkY) = self.checkTileCollision(mapManager, obj, left, newX, newY, True)
-            #if not chkX and checkX:
-            #    checkX = False
+            if not chkX and checkX:
+                checkX = False
 
-            #if not chkY and checkY:
-            #    checkY = False
+            if not chkY and checkY:
+                checkY = False
 
         return (checkX, checkY)
 
@@ -168,21 +156,24 @@ class PhysicsManager(object):
         :return: True/False if can move or not
         """
 
-        for x, y in corners:
+        collision = 0
 
-            tileX = math.floor(x / mapManager.tileWidth)
-            tileY = math.floor(y / mapManager.tileHeight)
+        for tuple in corners:
+            tileX = math.floor(tuple[0] / mapManager.tileWidth)
+            tileY = math.floor(tuple[1] / mapManager.tileHeight)
 
             if tileX >= mapManager.width or tileY >= mapManager.height:
                 return (False, False)
 
             if mapManager.tiles[tileY][tileX] not in self.nonBlockingTiles:
-                if isXAxis:
-                    return (False, True)
-                else:
-                    return (True, False)
+                collision += 1
 
-        print(newX, newY)
-        return (True, True)
+        if collision > 1:
+            if isXAxis:
+                return (False, True)
+            else:
+                return (True, False)
+        else:
+            return (True, True)
 
 physicsManager = PhysicsManager()
