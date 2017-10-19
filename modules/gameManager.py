@@ -54,6 +54,7 @@ class GameManager(object):
         """
         displayManager.init()
         guiManager.init()
+        guiManager.initHud()
         mapManager.load('test.map',[])
         displayManager.loadTilesImg(mapManager.tileWidth,mapManager.tileHeight)
         displayManager.loadObjectsImg(mapManager)
@@ -100,6 +101,7 @@ class GameManager(object):
         inputManager.handleEvents(guiManager, displayManager)
         inputManager.applyPlayerMoveEvents(self.managerList, self.deltaTime)
         physicsManager.applyGravity(mapManager, scrollManager, self.deltaTime)
+        guiManager.updateHud(self.deltaTime)
         displayManager.display(mapManager,guiManager)
 
 gameManager = GameManager()

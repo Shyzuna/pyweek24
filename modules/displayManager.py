@@ -162,6 +162,8 @@ class DisplayManager(object):
         for object in mapManager.objects.values():
             object.blit(self.screen,self.objectsImg)
 
+        guiManager.displayHud()
+
         # Update screen
         pygame.display.flip()
 

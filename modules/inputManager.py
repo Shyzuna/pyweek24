@@ -54,6 +54,8 @@ class InputManager(object):
                 self.handleFullScreen(displayManager, guiManager,event)
                 if event.key in self.directionState.keys():
                     self.directionState[event.key] = False
+                elif event.key == pygame.K_RETURN:
+                    guiManager.textBuffer.scrollNextText()
             elif event.type == pygame.KEYDOWN:
                 if event.key in self.directionState.keys():
                     self.directionState[event.key] = True

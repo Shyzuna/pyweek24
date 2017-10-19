@@ -9,6 +9,8 @@ MENU_PATH = os.path.join(IMGS_PATH, 'menu')
 OBJECTS_PATH = os.path.join(IMGS_PATH, 'objects')
 CHARACTERS_PATH = os.path.join(IMGS_PATH, 'characters')
 TRAPS_PATH = os.path.join(IMGS_PATH, 'traps')
+HUD_PATH = os.path.join(IMGS_PATH, 'hud')
+FONTS_PATH = os.path.join('data', 'fonts')
 
 # Display
 SCREEN_WIDTH = 1200
