@@ -8,6 +8,7 @@ TODO:
 """
 
 from objects.enums import ObjectName
+import settings.settings as settings
 
 import pygame
 import sys
@@ -31,6 +32,9 @@ class InputManager(object):
             pygame.K_RIGHT: False,
         }
 
+        self.jump_max = 500
+        self.jumping = False
+
     def handleFullScreen(self,displayManager,guiManager,event):
         """
         Check if input for fullscreen mode
@@ -42,7 +46,7 @@ class InputManager(object):
         if event.key == pygame.K_F5:
             displayManager.toggleFullScreen(guiManager)
 
-    def handleEvents(self,guiManager,displayManager):
+    def handleEvents(self, guiManager, displayManager):
         """
         Update events data and handle closing event
         :return: Nothing
@@ -60,7 +64,7 @@ class InputManager(object):
                 if event.key in self.directionState.keys():
                     self.directionState[event.key] = True
 
-    def handleMenuEvents(self,guiManager,displayManager):
+    def handleMenuEvents(self, guiManager, displayManager):
         """
         Handle events for menu
         :return: Nothing
@@ -97,23 +101,23 @@ class InputManager(object):
         physicsManager = managerList["physicsManager"]
         scrollManager = managerList["scrollManager"]
         player = mapManager.objects[ObjectName.PLAYER]
-        # Speed for the frame
-        currentSpeed = (player.speed * deltaTime) / 1000
-        distX,distY = 0,0
-        if self.directionState[pygame.K_RIGHT]:
-            distX += currentSpeed
-        if self.directionState[pygame.K_LEFT]:
-            distX -= currentSpeed
 
-        # Check collision
-        if physicsManager.checkCollision(mapManager,player,distX,distY):
-            # Check is scrolling is needed
-            scrollValue = scrollManager.isScrollNeeded(mapManager, player, distX, distY)
-            if scrollValue:
-                # Scroll Map
-                mapManager.scrollMap(scrollValue)
+        if player.isOnGround:
+            if self.directionState[pygame.K_RIGHT]:
+                player.velocityX = settings.MAX_VELOCITY_X
+            elif self.directionState[pygame.K_LEFT]:
+                player.velocityX = -settings.MAX_VELOCITY_X
             else:
-                # Move player
-                player.moveBy(distX,distY)
+                player.velocityX = 0
+        else:
+            if self.directionState[pygame.K_RIGHT]:
+                player.velocityX = settings.MAX_VELOCITY_X / 2
+            elif self.directionState[pygame.K_LEFT]:
+                player.velocityX = -settings.MAX_VELOCITY_X / 2
+
+        if self.directionState[pygame.K_UP]:
+            if player.isOnGround:
+                player.velocityY = -settings.MAX_VELOCITY_Y
+                player.isOnGround = False
 
 inputManager = InputManager()

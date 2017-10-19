@@ -88,7 +88,7 @@ class GameManager(object):
         Loop for the menu
         :return: Noothing
         """
-        inputManager.handleMenuEvents(guiManager,displayManager)
+        inputManager.handleMenuEvents(guiManager, displayManager)
         if guiManager.startGame:
             self.done = True
         guiManager.displayMenu()
@@ -100,7 +100,8 @@ class GameManager(object):
         """
         inputManager.handleEvents(guiManager, displayManager)
         inputManager.applyPlayerMoveEvents(self.managerList, self.deltaTime)
-        physicsManager.applyGravity(mapManager, scrollManager, self.deltaTime)
+        physicsManager.computeVelocity(mapManager, scrollManager, self.deltaTime)
+        physicsManager.applyGravity(mapManager)
         guiManager.updateHud(self.deltaTime)
         displayManager.display(mapManager,guiManager)
 
