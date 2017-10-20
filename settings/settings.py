@@ -15,11 +15,12 @@ FONTS_PATH = os.path.join('data', 'fonts')
 # Display
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
+SCREEN_PLAYING_HEIGHT = 700
 FPS = 60
 
 # Scroll zone (in pixels)
 SCROLL_ZONE_X = 400
-SCROLL_ZONE_Y = 200
+SCROLL_ZONE_Y = 250
 # Scroll speed
 SCROLL_SPEED = 1
 

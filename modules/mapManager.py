@@ -37,7 +37,7 @@ class MapManager:
         self.objects = {}
         self.tiles = []
         self.dialogs = []
-        self.currentRect = pygame.Rect(0, 0, settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT)
+        self.currentRect = pygame.Rect(0, 0, settings.SCREEN_WIDTH, settings.SCREEN_PLAYING_HEIGHT)
 
     def load(self, name, img):
         """

@@ -50,7 +50,7 @@ class ScrollManager:
         if playerY < settings.SCROLL_ZONE_Y:
             # To avoid oposite scrolling bug
             scrollY = -1 * abs(distY)
-        elif playerY > settings.SCREEN_HEIGHT - settings.SCROLL_ZONE_Y:
+        elif playerY > settings.SCREEN_PLAYING_HEIGHT - settings.SCROLL_ZONE_Y:
             scrollY = abs(distY)
 
         # Check if overextend map values
@@ -60,8 +60,8 @@ class ScrollManager:
             distX = (mapManager.mapSizeX - settings.SCREEN_WIDTH) - mapManager.currentRect.x
         if (mapManager.currentRect.y + distY) < 0:
             distY = mapManager.currentRect.y
-        elif (mapManager.currentRect.y + distY) > (mapManager.mapSizeY - settings.SCREEN_HEIGHT):
-            distY = (mapManager.mapSizeY - settings.SCREEN_HEIGHT) - mapManager.currentRect.y
+        elif (mapManager.currentRect.y + distY) > (mapManager.mapSizeY - settings.SCREEN_PLAYING_HEIGHT):
+            distY = (mapManager.mapSizeY - settings.SCREEN_PLAYING_HEIGHT) - mapManager.currentRect.y
 
         if scrollX == 0 and scrollY == 0:
             return 0
