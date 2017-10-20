@@ -121,14 +121,14 @@ class MapManager:
             print(objectType.GAME_OBJECT.value)
 
 
-    def scrollMap(self, scrollValue):
+    def scrollMap(self, x, y):
         """
         Try to scroll the map by scrollValue if possible
         :param scrollValue:
         :return: Nothing
         """
-        self.currentRect.x += scrollValue[0]
-        self.currentRect.y += scrollValue[1]
+        self.currentRect.x += x
+        self.currentRect.y += y
 
 mapManager = MapManager()
 

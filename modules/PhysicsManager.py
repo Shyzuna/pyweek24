@@ -34,6 +34,7 @@ class PhysicsManager(object):
         for object in mapManager.objects.values():
             if(object.velocityY < self.gravity):
                 object.velocityY += self.gravity / 100
+            print("Gravity", object.velocityY)
 
     def computeVelocity(self, mapManager, scrollManager, deltaTime):
         """
@@ -50,13 +51,30 @@ class PhysicsManager(object):
 
             (checkX, checkY) = self.checkCollision(mapManager, object, speedX, speedY)
 
-            if checkX:
-                object.x += speedX
+            if object.name == ObjectName.PLAYER:
+                scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
+                if scrollValue:
+                    # Scroll Map
 
-            if checkY:
-                object.y += speedY
-            else:
-                object.isOnGround = True
+                    if checkX and speedX != 0:
+                        mapManager.scrollMap(scrollValue[0], 0)
+                        if checkY:
+                            object.y += speedY
+                        else:
+                            object.isOnGround = True
+
+                    if checkY and speedY != 0:
+                        mapManager.scrollMap(0, scrollValue[1])
+                        if checkX:
+                            object.x += speedX
+
+                else:
+                    if checkX:
+                        object.x += speedX
+                    if checkY:
+                        object.y += speedY
+                    else:
+                        object.isOnGround = True
 
     def checkCollision(self, mapManager, obj, speedX, speedY):
         """
@@ -71,10 +89,12 @@ class PhysicsManager(object):
         newX = obj.x + speedX + mapManager.currentRect.x
         newY = obj.y + speedY + mapManager.currentRect.y
 
-        topLeft = (newX, newY)
-        topRight = (newX + obj.width, newY)
-        bottomLeft = (newX, newY + obj.height)
-        bottomRight = (newX + obj.width, newY + obj.height)
+        marge = 10
+
+        topLeft = (newX + marge , newY + marge)
+        topRight = (newX + obj.width - marge, newY + marge)
+        bottomLeft = (newX + marge, newY + obj.height - marge)
+        bottomRight = (newX + obj.width - marge, newY + obj.height - marge)
 
         top = [
             topLeft,
@@ -94,13 +114,6 @@ class PhysicsManager(object):
         left = [
             topLeft,
             bottomLeft
-        ]
-
-        cornerL = [
-            (newX, newY),
-            (newX + obj.width, newY),
-            (newX, newY + obj.height),
-            (newX + obj.width, newY + obj.height)
         ]
 
         checkX = True
@@ -158,22 +171,27 @@ class PhysicsManager(object):
 
         collision = 0
 
-        for tuple in corners:
-            tileX = math.floor(tuple[0] / mapManager.tileWidth)
-            tileY = math.floor(tuple[1] / mapManager.tileHeight)
+        for x, y in corners:
+            tileX = math.floor(x / mapManager.tileWidth)
+            tileY = math.floor(y / mapManager.tileHeight)
 
-            if tileX >= mapManager.width or tileY >= mapManager.height:
+            if tileX >= mapManager.width or tileY >= mapManager.height or tileX < 0 or tileY < 0:
+                print("out")
                 return (False, False)
 
             if mapManager.tiles[tileY][tileX] not in self.nonBlockingTiles:
+                mapManager.tiles[tileY][tileX] = 'e'
                 collision += 1
 
-        if collision > 1:
+        if collision == 1:
+           if not isXAxis:
+               return (True, False)
+        elif collision > 1:
             if isXAxis:
                 return (False, True)
             else:
                 return (True, False)
-        else:
-            return (True, True)
+
+        return (True, True)
 
 physicsManager = PhysicsManager()
