@@ -51,7 +51,7 @@ class GameObject:
             )
         self.animatedSprite.changeToDefaultAnimation()
 
-    def blit(self, screen, objectsImg):
+    def blit(self, screen):
         screen.blit(self.animatedSprite.spriteSheet, (self.x, self.y), self.animatedSprite.currentRect)
 
     def moveBy(self, distX, distY):
