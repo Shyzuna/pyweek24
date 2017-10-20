@@ -55,13 +55,13 @@ class ScrollManager:
 
         # Check if overextend map values
         if (mapManager.currentRect.x + distX) < 0:
-            distX = -1 * mapManager.currentRect.x
+            scrollX = -1 * mapManager.currentRect.x
         elif (mapManager.currentRect.x + distX) > (mapManager.mapSizeX - settings.SCREEN_WIDTH):
-            distX = (mapManager.mapSizeX - settings.SCREEN_WIDTH) - mapManager.currentRect.x
+            scrollX = (mapManager.mapSizeX - settings.SCREEN_WIDTH) - mapManager.currentRect.x
         if (mapManager.currentRect.y + distY) < 0:
-            distY = mapManager.currentRect.y
+            scrollY = mapManager.currentRect.y
         elif (mapManager.currentRect.y + distY) > (mapManager.mapSizeY - settings.SCREEN_PLAYING_HEIGHT):
-            distY = (mapManager.mapSizeY - settings.SCREEN_PLAYING_HEIGHT) - mapManager.currentRect.y
+            scrollY = (mapManager.mapSizeY - settings.SCREEN_PLAYING_HEIGHT) - mapManager.currentRect.y
 
         if scrollX == 0 and scrollY == 0:
             return 0

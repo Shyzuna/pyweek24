@@ -118,6 +118,10 @@ class InputManager(object):
                 player.velocityX = settings.MAX_VELOCITY_X / 2
             elif self.directionState[pygame.K_LEFT]:
                 player.velocityX = -settings.MAX_VELOCITY_X / 2
+            else:
+                player.velocityX = 0
+                player.animatedSprite.changeCurrentAnimation(AnimationType.IDLE)
+
 
         if self.directionState[pygame.K_UP]:
             if player.isOnGround:

@@ -53,20 +53,23 @@ class PhysicsManager(object):
 
             if object.name == ObjectName.PLAYER:
                 scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
+
                 if scrollValue:
-                    # Scroll Map
-
-                    if checkX and speedX != 0:
+                    if scrollValue[0] > 0 and speedX > 0 or scrollValue[0] < 0 and speedX < 0:
                         mapManager.scrollMap(scrollValue[0], 0)
-                        if checkY:
+                        if checkY and object.isOnGround:
                             object.y += speedY
-                        else:
-                            object.isOnGround = True
+                    else:
+                        if checkX:
+                            object.x += speedX
 
-                    if checkY and speedY != 0:
+                    if scrollValue[1] > 0 and speedY > 0 or scrollValue[1] < 0 and speedY < 0:
                         mapManager.scrollMap(0, scrollValue[1])
                         if checkX:
                             object.x += speedX
+                    else:
+                        if checkY:
+                            object.y += speedY
 
                 else:
                     if checkX:
@@ -180,7 +183,6 @@ class PhysicsManager(object):
                 return (False, False)
 
             if mapManager.tiles[tileY][tileX] not in self.nonBlockingTiles:
-                mapManager.tiles[tileY][tileX] = 'e'
                 collision += 1
 
         if collision == 1:
