@@ -27,6 +27,8 @@ class AnimatedSprite(object):
         # Image info
         self.spriteSheet = spriteSheet
         w,h = spriteSheet.get_size()
+        self.spriteSheet = pygame.transform.scale(spriteSheet, (int(w // scaleX), (int(h // scaleY))))
+        w, h = self.spriteSheet.get_size()
         self.imgW = w // maxSpriteW
         self.imgH = h // maxSpriteH
         self.scaleX = scaleX
@@ -81,6 +83,9 @@ class AnimatedSprite(object):
         animation = self.animeList[self.currentAnim] if self.currentAnim else self.animeList[self.defaultAnim]
         if not animation:
             raise RuntimeError("No animation loaded")
+
+        if animation['timeDuration'] == -1:
+            return
 
         self.currentTime += deltaTime
         if self.currentTime > animation["timeByFrame"]:
