@@ -46,11 +46,14 @@ class InputManager(object):
         if event.key == pygame.K_F5:
             displayManager.toggleFullScreen(guiManager)
 
-    def handleEvents(self, guiManager, displayManager):
+    def handleEvents(self, guiManager, displayManager, mapManager):
         """
         Update events data and handle closing event
         :return: Nothing
         """
+
+        player = mapManager.objects[ObjectName.PLAYER]
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -60,6 +63,8 @@ class InputManager(object):
                     self.directionState[event.key] = False
                 elif event.key == pygame.K_RETURN:
                     guiManager.textBuffer.scrollNextText()
+                elif event.key in [pygame.K_RCTRL, pygame.K_LCTRL]:
+                    player.empowerNextSpell(guiManager)
             elif event.type == pygame.KEYDOWN:
                 if event.key in self.directionState.keys():
                     self.directionState[event.key] = True
@@ -100,6 +105,7 @@ class InputManager(object):
         mapManager = managerList["mapManager"]
         physicsManager = managerList["physicsManager"]
         scrollManager = managerList["scrollManager"]
+        guiManager = managerList["guiManager"]
         player = mapManager.objects[ObjectName.PLAYER]
 
         if player.isOnGround:
@@ -125,7 +131,12 @@ class InputManager(object):
 
         if self.directionState[pygame.K_UP]:
             if player.isOnGround:
-                player.velocityY = -settings.MAX_VELOCITY_Y
+                if player.empowerNext:
+                    yVel = -settings.MAX_VELOCITY_Y * 2
+                    player.consumeEmpower(guiManager)
+                else:
+                    yVel = -settings.MAX_VELOCITY_Y
+                player.velocityY = yVel
                 player.isOnGround = False
 
 inputManager = InputManager()

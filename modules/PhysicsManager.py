@@ -34,7 +34,6 @@ class PhysicsManager(object):
         for object in mapManager.objects.values():
             if(object.velocityY < self.gravity):
                 object.velocityY += self.gravity / 100
-            print("Gravity", object.velocityY)
 
     def computeVelocity(self, mapManager, scrollManager, deltaTime):
         """

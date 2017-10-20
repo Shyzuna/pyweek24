@@ -107,26 +107,6 @@ class DisplayManager(object):
             startY += tileH
             startX = 0
 
-    def loadObjectsImg(self,mapManager):
-        """
-        Load all images for objects and set width and height of them (maybe smwhere else ?)
-        :param mapManager:
-        :return: Nothing
-        """
-        self.objectsImg = {}
-        for object in mapManager.objects.values():
-            print(object.name)
-            if object.name not in self.objectsImg.keys():
-                img = pygame.image.load(objectProperties[object.name]['imgPath'])
-                w,h = img.get_size()
-                ratio = objectProperties[object.name]['imgRatio']
-                self.objectsImg[object.name] = pygame.transform.scale(img,(int(w/ratio),int(h/ratio)))
-            w,h = self.objectsImg[object.name].get_size()
-            object.width = w
-            object.height = h
-            if object.name in [ObjectName.PLAYER,ObjectName.NINJA]:
-                object.initSpriteSheet()
-
     def toggleFullScreen(self,guiManager):
         """
         Change fullscreen mode
@@ -160,7 +140,7 @@ class DisplayManager(object):
         self.screen.blit(self.mapSurface, (0, 0), mapManager.currentRect)
 
         for object in mapManager.objects.values():
-            object.blit(self.screen,self.objectsImg)
+            object.blit(self.screen)
 
         guiManager.displayHud()
 

@@ -49,7 +49,7 @@ class GameObject:
             )
         self.animatedSprite.changeToDefaultAnimation()
 
-    def blit(self, screen, objectsImg):
+    def blit(self, screen):
         screen.blit(self.spriteSheet, (self.x, self.y), self.animatedSprite.currentRect)
 
     def moveBy(self, distX, distY):
@@ -71,15 +71,6 @@ class Ninja(GameObject):
 
         super(Ninja, self).__init__(name, type, x, y, tileX, tileY, width, height)
 
- #   def blit(self,screen,objectsImg):
- #       screen.blit(objectsImg[self.name], (self.x, self.y), self.currentRect)
-
-    def initSpriteSheet(self):
-        # NEED TO PUT THEESE VALUE SOMEWHERE ...
-        self.width /= 5 # Number of positions in one line
-        self.height /= 5
-        self.currentRect = pygame.Rect(0,0,self.width,self.height)
-
 class Player(GameObject):
     """
     A player
@@ -92,15 +83,25 @@ class Player(GameObject):
         '''
 
         super(Player, self).__init__(name, type, x, y, tileX, tileY, width, height)
+        self.empowerNext = False
 
- #   def blit(self,screen,objectsImg):
- #       screen.blit(objectsImg[self.name], (self.x, self.y), self.currentRect)
+    def empowerNextSpell(self, guiManager):
+        """
+        Try to empower the next spell
+        :param guiManager:
+        :return:
+        """
+        if not self.empowerNext:
+            self.empowerNext = guiManager.empowerSpell()
 
-    def initSpriteSheet(self):
-        # NEED TO PUT THEESE VALUE SOMEWHERE ...
-        self.width /= 5 # Number of positions in one line
-        self.height /= 5
-        self.currentRect = pygame.Rect(0,0,self.width,self.height)
+    def consumeEmpower(self, guiManager):
+        """
+        Consume the empower for the spell
+        :param guiManager:
+        :return: Nothing
+        """
+        self.empowerNext = False
+        guiManager.consumeWaitingEmpowering()
 
 class Trap(GameObject):
     """

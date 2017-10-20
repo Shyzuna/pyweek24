@@ -57,7 +57,6 @@ class GameManager(object):
         guiManager.initHud()
         mapManager.load('test.map',[])
         displayManager.loadTilesImg(mapManager.tileWidth,mapManager.tileHeight)
-        displayManager.loadObjectsImg(mapManager)
         displayManager.createMapSurface(mapManager)
 
     def start(self):
@@ -98,7 +97,7 @@ class GameManager(object):
         Loop for the game
         :return: Nothing
         """
-        inputManager.handleEvents(guiManager, displayManager)
+        inputManager.handleEvents(guiManager, displayManager, mapManager)
         inputManager.applyPlayerMoveEvents(self.managerList, self.deltaTime)
         physicsManager.applyGravity(mapManager)
         physicsManager.computeVelocity(mapManager, scrollManager, self.deltaTime)

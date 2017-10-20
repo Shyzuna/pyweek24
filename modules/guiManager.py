@@ -164,10 +164,14 @@ class GUIManager(object):
         for i in range(0, self.barNumber):
             bar = {
                 "displayed": True,
-                "percent": random.randint(0,100),
-                "alive": (i % 2) == 0
+                "percent": 0,
+                "alive": True,
+                "empowering": False
             }
             self.cooldownBars.append(bar)
+        self.empoweringWaiting = -1
+        self.loadSpeed = 10
+        self.unloadSpeed = -25
 
         # draw default bar
         self.classicBar = pygame.Surface((w/5, self.barHeight))
@@ -175,16 +179,55 @@ class GUIManager(object):
         self.classicBar.set_colorkey(Colors.WHITE.value)
         pygame.draw.rect(self.classicBar, Colors.BLACK.value, self.classicBar.get_rect(),2)
 
-    def drawInternBar(self, percent):
+    def empowerSpell(self):
+        """
+        Try to empower next spell
+        :return: True if ok else False
+        """
+        # Check if a bar is available
+        i = 0
+        for bar in self.cooldownBars:
+            if bar["displayed"] and bar["alive"] and bar["percent"] == 100:
+                self.empoweringWaiting = i
+                return True
+            i += 1
+        return False
+
+    def consumeWaitingEmpowering(self):
+        """
+        Activate the empowering status of the waiting
+        :return:
+        """
+        self.cooldownBars[self.empoweringWaiting]["empowering"] = True
+        self.empoweringWaiting = -1
+
+    def updateBars(self, deltaTime):
+        """
+        Update the cooldowns bars
+        :param deltaTime:
+        :return:
+        """
+        currentLoadSpeed = (self.loadSpeed * deltaTime) / 1000
+        currentUnloadSpeed = (self.unloadSpeed * deltaTime) / 1000
+        for bar in self.cooldownBars:
+            speed = currentLoadSpeed if not bar["empowering"] else currentUnloadSpeed
+            bar["percent"] += speed
+            if bar["percent"] > 100:
+                bar["percent"] = 100
+            elif bar["percent"] < 0:
+                bar["empowering"] = False
+
+    def drawInternBar(self, percent, isEmpowered):
         """
         draw the intern bar surface
         :param percent:
         :return: return bar surface
         """
+        color = Colors.RED.value if isEmpowered else Colors.BLUE.value
         internBar = self.classicBar.copy()
         rect = internBar.get_rect()
         rect.width = (rect.width * percent ) / 100
-        pygame.draw.rect(internBar, Colors.BLUE.value, rect)
+        pygame.draw.rect(internBar, color, rect)
         return internBar
 
     def displayHud(self):
@@ -197,15 +240,18 @@ class GUIManager(object):
 
         startY = screenH - self.hudElem["hudBar"].get_size()[1] + 50
         startX = 20
+        i = 0
         for bar in self.cooldownBars:
             if bar["displayed"]:
                 ico = self.hudElem["ninjaIco"] if bar["alive"] else self.hudElem["deadIco"]
                 self.screen.blit(ico,(startX,startY - ico.get_size()[1] / 2))
                 startX += ico.get_size()[0] + 20
-                self.screen.blit(self.drawInternBar(bar["percent"]), (startX, startY))
+                empowering = bar["empowering"] or i == self.empoweringWaiting
+                self.screen.blit(self.drawInternBar(bar["percent"], empowering), (startX, startY))
                 self.screen.blit(self.classicBar, (startX,startY))
                 startY += self.barHeight + self.innerSpace
                 startX = 20
+            i += 1
         self.textBuffer.display(self.screen)
 
     def displayMenu(self):
@@ -257,6 +303,7 @@ class GUIManager(object):
         :return: Nothing
         """
         self.textBuffer.applyScrolling(deltaTime)
+        self.updateBars(deltaTime)
 
 class TextBuffer(object):
     """
