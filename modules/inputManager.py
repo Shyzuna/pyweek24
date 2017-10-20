@@ -7,7 +7,7 @@ TODO:
 * sys.exit() ? or return value to go out of loop ?
 """
 
-from objects.enums import ObjectName
+from objects.enums import ObjectName,AnimationType
 import settings.settings as settings
 
 import pygame
@@ -105,11 +105,15 @@ class InputManager(object):
         if player.isOnGround:
             if self.directionState[pygame.K_RIGHT]:
                 player.velocityX = settings.MAX_VELOCITY_X
+                player.animatedSprite.changeCurrentAnimation(AnimationType.WALKING)
             elif self.directionState[pygame.K_LEFT]:
                 player.velocityX = -settings.MAX_VELOCITY_X
+                player.animatedSprite.changeCurrentAnimation(AnimationType.WALKING)
             else:
                 player.velocityX = 0
+                player.animatedSprite.changeCurrentAnimation(AnimationType.IDLE)
         else:
+            # Should be if only block ?
             if self.directionState[pygame.K_RIGHT]:
                 player.velocityX = settings.MAX_VELOCITY_X / 2
             elif self.directionState[pygame.K_LEFT]:

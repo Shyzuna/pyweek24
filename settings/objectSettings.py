@@ -1,4 +1,5 @@
-from objects.enums import ObjectName
+from objects.enums import ObjectName,Direction,AnimationType
+
 import os
 import settings.settings as settings
 
@@ -54,4 +55,32 @@ objectProperties = {
         'imgPath': os.path.join(settings.CHARACTERS_PATH, "Player.png"),
         'imgRatio': 1
     }
+}
+
+ObjectsAnimations = {
+    ObjectName.PLAYER: {
+        'imgPath': os.path.join(settings.CHARACTERS_PATH, "Player.png"),
+        'maxSpriteW': 5,
+        'maxSpriteH': 5,
+        'imgRatio': 1,
+        'animations': [
+            {
+                "name": AnimationType.WALKING,
+                "direction": Direction.RIGHT,
+                "spriteNumber": 5,
+                "line": 0,
+                "isDefault": False,
+                "timeDuration": 800
+            },
+            {
+                "name": AnimationType.IDLE,
+                "direction": Direction.RIGHT,
+                "spriteNumber": 2,
+                "line": 2,
+                "isDefault": True,
+                "timeDuration": 1000
+            }
+        ]
+    }
+
 }

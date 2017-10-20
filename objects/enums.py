@@ -39,3 +39,19 @@ class ObjectType(Enum):
     NINJA = 'NINJA'
     PLAYER = 'PLAYER'
     TRAP = 'TRAP'
+
+class AnimationType(Enum):
+    """
+    Enum for animation
+    """
+    IDLE = 0,
+    WALKING = 1
+
+class Direction(Enum):
+    """
+    Enun for direction
+    """
+    TOP = 0
+    BOTTOM = 1
+    LEFT = 2
+    RIGHT = 3
