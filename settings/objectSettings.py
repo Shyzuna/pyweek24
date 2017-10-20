@@ -81,6 +81,21 @@ ObjectsAnimations = {
                 "timeDuration": 1000
             }
         ]
+    },
+    ObjectName.BOX: {
+        'imgPath': os.path.join(settings.OBJECTS_PATH, "box.png"),
+        'maxSpriteW': 1,
+        'maxSpriteH': 1,
+        'imgRatio': 2,
+        'animations': [
+            {
+                "name": AnimationType.IDLE,
+                "direction": Direction.RIGHT,
+                "spriteNumber": 1,
+                "line": 0,
+                "isDefault": True,
+                "timeDuration": -1
+            }
+        ]
     }
-
 }

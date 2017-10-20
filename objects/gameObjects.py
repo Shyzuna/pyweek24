@@ -20,6 +20,8 @@ class GameObject:
         self.type = type
         self.x = x
         self.y = y
+        self.realX = x
+        self.realY = y
         self.tileX = tileX
         self.tileY = tileY
         self.width = width
@@ -49,8 +51,8 @@ class GameObject:
             )
         self.animatedSprite.changeToDefaultAnimation()
 
-    def blit(self, screen):
-        screen.blit(self.spriteSheet, (self.x, self.y), self.animatedSprite.currentRect)
+    def blit(self, screen, objectsImg):
+        screen.blit(self.animatedSprite.spriteSheet, (self.x, self.y), self.animatedSprite.currentRect)
 
     def moveBy(self, distX, distY):
         self.x += distX

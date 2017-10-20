@@ -103,50 +103,45 @@ class PhysicsManager(object):
         currentX = obj.x + mapManager.currentRect.x
         currentY = obj.y + mapManager.currentRect.y
 
-        newX = obj.x + speedX + mapManager.currentRect.x
-        newY = obj.y + speedY + mapManager.currentRect.y
+        newX = currentX + speedX
+        newY = currentY + speedY
 
-        marge = 10
+        topLeftX = (newX, currentY )
+        topRightX = (newX + obj.width, currentY )
+        bottomLeftX = (newX, currentY + obj.height)
+        bottomRightX = (newX + obj.width, currentY + obj.height)
 
-        topLeftX = (newX + marge, currentY + marge)
-        topRightX = (newX + obj.width - marge, currentY + marge)
-        bottomLeftX = (newX + marge, currentY + obj.height - marge)
-        bottomRightX = (newX + obj.width - marge, currentY + obj.height - marge)
-
-        topLeftY = (currentX + marge, newY + marge)
-        topRightY = (currentX + obj.width - marge, newY + marge)
-        bottomLeftY = (currentX + marge, newY + obj.height - marge)
-        bottomRightY = (currentX + obj.width - marge, newY + obj.height - marge)
+        topLeftY = (currentX, newY)
+        topRightY = (currentX + obj.width, newY)
+        bottomLeftY = (currentX, newY + obj.height)
+        bottomRightY = (currentX + obj.width, newY + obj.height)
 
         checkX = True
         checkY = True
 
-        # Two axes
-        isTwoAxis = speedY != 0 and speedX != 0
-
         # Falling
         if (speedY > 0):
-            (chkX, chkY) = self.checkTileCollision(mapManager, obj, (bottomRightY, bottomLeftY), obj.x , newY, False, isTwoAxis)
+            (chkX, chkY) = self.checkTileCollision(mapManager, obj, (bottomRightY, bottomLeftY), False)
 
             if not chkY and checkY:
                 checkY = False
 
         # Jumping
         else:
-            (chkX, chkY) = self.checkTileCollision(mapManager, obj, (topRightY, topLeftY), obj.x, newY, False, isTwoAxis)
+            (chkX, chkY) = self.checkTileCollision(mapManager, obj, (topRightY, topLeftY), False)
 
             if not chkY and checkY:
                 checkY = False
 
         # Right
         if (speedX > 0):
-            (chkX, chkY) = self.checkTileCollision(mapManager, obj, (topRightX, bottomRightX), newX, newY, True, isTwoAxis)
+            (chkX, chkY) = self.checkTileCollision(mapManager, obj, (topRightX, bottomRightX), True)
             if not chkX and checkX:
                 checkX = False
 
         # Left
         else:
-            (chkX, chkY) = self.checkTileCollision(mapManager, obj, (topLeftX, bottomLeftX), newX, newY, True, isTwoAxis)
+            (chkX, chkY) = self.checkTileCollision(mapManager, obj, (topLeftX, bottomLeftX), True)
             if not chkX and checkX:
                 checkX = False
 
@@ -155,7 +150,7 @@ class PhysicsManager(object):
         # Check collision with other obj
         # SOON
 
-    def checkTileCollision(self, mapManager, obj, corners, newX, newY, isXAxis, isTwoAxis):
+    def checkTileCollision(self, mapManager, obj, corners, isXAxis):
         """
         Check tile collision of the object
         :param mapManager:
