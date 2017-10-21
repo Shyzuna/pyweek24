@@ -34,7 +34,7 @@ class GameManager(object):
         """
         pass
 
-    def init(self):
+    def init(self, playIntro):
         """
         Init stuff
         :return: Nothing
@@ -44,7 +44,7 @@ class GameManager(object):
         self.clock = pygame.time.Clock()
         self.fps = settings.FPS
         self.showFps = True
-        self.introFinished = False
+        self.introFinished = not playIntro
         self.gameWin = False
 
         self.managerList = {
@@ -75,7 +75,7 @@ class GameManager(object):
         while 1:
             self.mainLoop(self.menuLoop)
             self.mainLoop(self.gameLoop)
-            self.init()
+            self.init(False)
 
     def mainLoop(self,loop):
         """
@@ -123,7 +123,8 @@ class GameManager(object):
             physicsManager.computeVelocity(mapManager, scrollManager, guiManager, self.deltaTime)
             dialogList = physicsManager.checkDialogCollision(mapManager)
             for dialog in dialogList:
-                dialog.play(guiManager)
+                if not (self.introFinished and dialog.name == settings.INTRO_DIALOG_ID):
+                    dialog.play(guiManager)
 
             mapManager.updateDialogs(guiManager, self.deltaTime, self)
 
