@@ -52,10 +52,10 @@ class GameObject:
         self.animatedSprite.changeToDefaultAnimation()
 
     def blit(self, mapManager, screen):
-        if self.realX >= mapManager.currentRect.x \
-            and self.realX < mapManager.currentRect.x + mapManager.currentRect.w \
-            and self.realY >= mapManager.currentRect.y \
-            and self.realY < mapManager.currentRect.x + mapManager.currentRect.h:
+        if self.realX >= mapManager.currentRect.x - mapManager.tileWidth \
+            and self.realX < mapManager.currentRect.x + mapManager.currentRect.w + mapManager.tileWidth\
+            and self.realY >= mapManager.currentRect.y - mapManager.tileHeight \
+            and self.realY < mapManager.currentRect.x + mapManager.currentRect.h + mapManager.tileHeight :
 
             self.x = self.realX - mapManager.currentRect.x
             self.y = self.realY - mapManager.currentRect.y
