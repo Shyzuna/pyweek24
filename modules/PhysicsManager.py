@@ -87,7 +87,11 @@ class PhysicsManager(object):
                         if speedY > 0:
                             object.isOnGround = False
                 else:
-                    object.isOnGround = True
+                    if speedY > 0:
+                        object.isOnGround = True
+                    else:
+                        object.isOnGround = False
+                        object.velocityY = 0
 
     def checkCollision(self, mapManager, obj, speedX, speedY):
         """
