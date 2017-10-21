@@ -8,6 +8,7 @@ TODO:
 """
 
 import os
+import math
 import settings.settings as settings
 
 class Dialog(object):
@@ -20,6 +21,8 @@ class Dialog(object):
         """
         self.content = []
         with open(os.path.join(settings.DIALOGS_PATH, file + ".dialog")) as dialogFile:
+            line = dialogFile.readline().rstrip()
+            self.autoScroll = True if line == "1" else False
             line = dialogFile.readline()
             while line:
                 line = line.rstrip()
@@ -63,4 +66,9 @@ class Dialog(object):
                     self.isPlaying = False
                 else:
                     text = "{}: {}".format(self.content[self.currentDial]["author"], self.content[self.currentDial]["text"])
+                    previusText = "{}: {}".format(self.content[self.currentDial - 1]["author"], self.content[self.currentDial - 1]["text"])
                     guiManager.textBuffer.renderText(text)
+                    if self.autoScroll:
+                        scrollRequired = math.ceil(len(previusText) / guiManager.textBuffer.maxCharacter)
+                        print(scrollRequired)
+                        guiManager.textBuffer.scrollNextText(scrollRequired)
