@@ -45,6 +45,9 @@ class PhysicsManager(object):
         """
 
         for object in mapManager.objects.values():
+            # object.realX = object.x + mapManager.currentRect.x
+            # object.realY = object.y + mapManager.currentRect.y
+
             speedY = (object.velocityY * deltaTime) / 1000
             speedX = (object.velocityX * deltaTime) / 1000
 
@@ -57,32 +60,43 @@ class PhysicsManager(object):
                     if scrollValue:
                         if scrollValue[0] > 0 and speedX > 0 or scrollValue[0] < 0 and speedX < 0:
                             mapManager.scrollMap(scrollValue[0], 0)
+
+                            for obj in mapManager.objects.values():
+                                if obj.name != ObjectName.PLAYER:
+                                    obj.realX -= scrollValue[0]
+
                             if checkY and object.isOnGround:
-                                object.y += speedY
+                                object.realY += speedY
 
                                 if speedY > 0:
                                     object.isOnGround = False
                             elif not checkY:
                                 object.isOnGround = True
                         else:
-                            object.x += speedX
+                            object.realX += speedX
                     else:
-                        object.x += speedX
+                        object.realX += speedX
                 if checkY:
                     scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
 
                     if scrollValue:
                         if scrollValue[1] > 0 and speedY > 0 or scrollValue[1] < 0 and speedY < 0:
                             mapManager.scrollMap(0, scrollValue[1])
+
+                            for object in mapManager.objects.values():
+                                if object.name != ObjectName.PLAYER:
+                                    object.realY -= scrollValue[1]
+
+
                             if checkX:
-                                object.x += speedX
+                                object.realX += speedX
                         else:
-                            object.y += speedY
+                            object.realY += speedY
 
                             if speedY > 0:
                                 object.isOnGround = False
                     else:
-                        object.y += speedY
+                        object.realY += speedY
 
                         if speedY > 0:
                             object.isOnGround = False
@@ -104,14 +118,14 @@ class PhysicsManager(object):
         """
         # Get future position on global map
 
-        currentX = obj.x + mapManager.currentRect.x
-        currentY = obj.y + mapManager.currentRect.y
+        currentX = obj.realX
+        currentY = obj.realY
 
         newX = currentX + speedX
         newY = currentY + speedY
 
-        topLeftX = (newX, currentY )
-        topRightX = (newX + obj.width, currentY )
+        topLeftX = (newX, currentY)
+        topRightX = (newX + obj.width, currentY)
         bottomLeftX = (newX, currentY + obj.height)
         bottomRightX = (newX + obj.width, currentY + obj.height)
 

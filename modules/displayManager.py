@@ -140,7 +140,7 @@ class DisplayManager(object):
         self.screen.blit(self.mapSurface, (0, 0), mapManager.currentRect)
 
         for object in mapManager.objects.values():
-            object.blit(self.screen)
+            object.blit(mapManager, self.screen)
 
         guiManager.displayHud()
 

@@ -51,8 +51,16 @@ class GameObject:
             )
         self.animatedSprite.changeToDefaultAnimation()
 
-    def blit(self, screen):
-        screen.blit(self.animatedSprite.spriteSheet, (self.x, self.y), self.animatedSprite.currentRect)
+    def blit(self, mapManager, screen):
+        if self.realX >= mapManager.currentRect.x \
+            and self.realX < mapManager.currentRect.x + mapManager.currentRect.w \
+            and self.realY >= mapManager.currentRect.y \
+            and self.realY < mapManager.currentRect.x + mapManager.currentRect.h:
+
+            self.x = self.realX - mapManager.currentRect.x
+            self.y = self.realY - mapManager.currentRect.y
+
+            screen.blit(self.animatedSprite.spriteSheet, (self.x, self.y), self.animatedSprite.currentRect)
 
     def moveBy(self, distX, distY):
         self.x += distX
