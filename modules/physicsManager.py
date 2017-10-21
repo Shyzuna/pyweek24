@@ -165,10 +165,10 @@ class PhysicsManager(object):
             # Check collision with other obj
             if bottomLeftYCollision or bottomRightYCollision:
                 if obj.name == ObjectName.PLAYER:
-                    self.checkDmgAble([topRightYCollision, bottomRightYCollision],
+                    self.checkDmgAble([bottomLeftYCollision, bottomRightYCollision],
                                           obj, guiManager)
 
-                    self.checkNinjaAble([topRightYCollision, bottomRightYCollision],
+                    self.checkNinjaAble([bottomLeftYCollision, bottomRightYCollision],
                                           obj)
 
 
