@@ -100,7 +100,8 @@ class GameManager(object):
         inputManager.handleEvents(guiManager, displayManager, mapManager)
         inputManager.applyPlayerMoveEvents(self.managerList, self.deltaTime)
         physicsManager.applyGravity(mapManager)
-        physicsManager.computeVelocity(mapManager, scrollManager, self.deltaTime)
+        physicsManager.applyFriction(mapManager)
+        physicsManager.computeVelocity(mapManager, scrollManager, guiManager, self.deltaTime)
         dialogList = physicsManager.checkDialogCollision(mapManager)
         for dialog in dialogList:
             dialog.play(guiManager)

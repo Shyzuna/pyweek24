@@ -65,9 +65,14 @@ class InputManager(object):
                     guiManager.textBuffer.scrollNextText()
                 elif event.key in [pygame.K_RCTRL, pygame.K_LCTRL]:
                     player.empowerNextSpell(guiManager)
+                elif event.key in [pygame.K_LALT,pygame.K_RALT]:
+                    player.disablePushMode()
             elif event.type == pygame.KEYDOWN:
                 if event.key in self.directionState.keys():
                     self.directionState[event.key] = True
+                elif event.key in [pygame.K_LALT,pygame.K_RALT]:
+                    player.enablePushMode()
+
 
     def handleMenuEvents(self, guiManager, displayManager):
         """

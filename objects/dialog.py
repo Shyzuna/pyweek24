@@ -70,5 +70,4 @@ class Dialog(object):
                     guiManager.textBuffer.renderText(text)
                     if self.autoScroll:
                         scrollRequired = math.ceil(len(previusText) / guiManager.textBuffer.maxCharacter)
-                        print(scrollRequired)
                         guiManager.textBuffer.scrollNextText(scrollRequired)

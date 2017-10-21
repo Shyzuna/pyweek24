@@ -94,6 +94,11 @@ class MapManager:
                 line = line.rstrip()
                 id, name, type, pos = line.split('|')
                 name = objectName(name)
+
+                if name == objectName.BOX:
+                    type,weight = type.split('x')
+                    weight = int(weight)
+
                 type = objectType(type)
 
                 tileX, tileY = pos.split('x')
@@ -117,6 +122,9 @@ class MapManager:
 
                 elif type == objectType.TRAP:
                     obj = gameObjects.Trap(name, type, x, y, tileX, tileY, w, h)
+
+                elif type == objectType.BOX:
+                    obj = gameObjects.Box(name, type, x, y, tileX, tileY, w, h, weight)
 
                 if obj is not None:
                     self.objects[id] = obj

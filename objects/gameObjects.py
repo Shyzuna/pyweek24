@@ -96,6 +96,28 @@ class Player(GameObject):
 
         super(Player, self).__init__(name, type, x, y, tileX, tileY, width, height)
         self.empowerNext = False
+        self.pushMode = False
+        self.pushPower = 100
+        self.isPushing = False
+        self.isEmpoweredPushing = False
+        self.maxEmpoweringPushingTime = 2000
+        self.currentEmpoweringPushingTime = 0
+
+    def updateEmpoweringPushingTime(self, deltaTime):
+        if self.isEmpoweredPushing:
+            self.currentEmpoweringPushingTime += deltaTime
+            if self.currentEmpoweringPushingTime > self.maxEmpoweringPushingTime:
+                self.currentEmpoweringPushingTime = 0
+                self.isEmpoweredPushing = False
+
+    def enablePushMode(self):
+        self.pushMode = True
+
+    def disablePushMode(self):
+        self.pushMode = False
+        self.isPushing = False
+        self.isEmpoweredPushing = False
+        self.currentEmpoweringPushingTime = 0
 
     def empowerNextSpell(self, guiManager):
         """
@@ -127,3 +149,17 @@ class Trap(GameObject):
         '''
 
         super(Trap, self).__init__(name, type, x, y, tileX, tileY, width, height)
+
+class Box(GameObject):
+    """
+    A trap
+    """
+
+    def __init__(self, name, type, x, y, tileX, tileY, width, height, weight):
+        '''
+        Constructor
+
+        '''
+
+        super(Box, self).__init__(name, type, x, y, tileX, tileY, width, height)
+        self.weight = weight

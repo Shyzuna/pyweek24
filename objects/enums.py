@@ -40,6 +40,7 @@ class ObjectType(Enum):
     NINJA = 'NINJA'
     PLAYER = 'PLAYER'
     TRAP = 'TRAP'
+    BOX = 'BOX'
 
 class AnimationType(Enum):
     """

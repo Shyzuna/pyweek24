@@ -7,7 +7,9 @@ TODO:
 *
 """
 
-from objects.enums import ObjectName
+from settings.objectSettings import ObjectName
+from settings.objectSettings import objectProperties
+
 import settings.settings as settings
 
 import math
@@ -22,6 +24,7 @@ class PhysicsManager(object):
         Init default value
         """
         self.gravity = 500
+        self.friction = 0.8
         self.nonBlockingTiles = ['0']
 
     def applyGravity(self, mapManager):
@@ -37,7 +40,20 @@ class PhysicsManager(object):
             if(object.velocityY < self.gravity):
                 object.velocityY += self.gravity / 100
 
-    def computeVelocity(self, mapManager, scrollManager, deltaTime):
+    def closedFromZero(self, val, ceil):
+        if val < ceil and val > -ceil:
+            return 0
+        return val
+
+    def applyFriction(self, mapManager):
+
+        for object in mapManager.objects.values():
+            if object.name != ObjectName.PLAYER:
+                if object.velocityX != 0:
+                    signe = -1 if object.velocityX > 0 else 1
+                    object.velocityX = self.closedFromZero(object.velocityX + (signe * self.friction),0.2)
+
+    def computeVelocity(self, mapManager, scrollManager, guiManager, deltaTime):
         """
         Apply gravity on all objects with scrolling handling for player
         :param mapManager:
@@ -50,36 +66,41 @@ class PhysicsManager(object):
             # object.realX = object.x + mapManager.currentRect.x
             # object.realY = object.y + mapManager.currentRect.y
 
+            if object.name == ObjectName.PLAYER:
+                object.updateEmpoweringPushingTime(deltaTime)
+
             speedY = (object.velocityY * deltaTime) / 1000
             speedX = (object.velocityX * deltaTime) / 1000
 
-            (checkX, checkY) = self.checkCollision(mapManager, object, speedX, speedY)
+            (checkX, checkY) = self.checkCollision(mapManager, object, speedX, speedY, guiManager)
 
             if checkX:
-                scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
+                if object.name == ObjectName.PLAYER:
+                    scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
 
-                if scrollValue:
-                    if scrollValue[0] > 0 and speedX > 0 or scrollValue[0] < 0 and speedX < 0:
-                        mapManager.scrollMap(scrollValue[0], 0)
+                    if scrollValue:
+                        if scrollValue[0] > 0 and speedX > 0 or scrollValue[0] < 0 and speedX < 0:
+                            mapManager.scrollMap(scrollValue[0], 0)
 
-                        if checkY and object.isOnGround:
-                            object.realY += speedY
+                            if checkY and object.isOnGround:
+                                object.realY += speedY
 
-                            if speedY > 0:
-                                object.isOnGround = False
-                        elif not checkY:
-                            object.isOnGround = True
+                                if speedY > 0:
+                                    object.isOnGround = False
+                            elif not checkY:
+                                object.isOnGround = True
 
                 object.realX += speedX
             if checkY:
-                scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
+                if object.name == ObjectName.PLAYER:
+                    scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
 
-                if scrollValue:
-                    if scrollValue[1] > 0 and speedY > 0 or scrollValue[1] < 0 and speedY < 0:
-                        mapManager.scrollMap(0, scrollValue[1])
+                    if scrollValue:
+                        if scrollValue[1] > 0 and speedY > 0 or scrollValue[1] < 0 and speedY < 0:
+                            mapManager.scrollMap(0, scrollValue[1])
 
-                        if checkX:
-                            object.realX += speedX
+                            if checkX:
+                                object.realX += speedX
 
                 object.realY += speedY
 
@@ -92,7 +113,7 @@ class PhysicsManager(object):
                     object.isOnGround = False
                     object.velocityY = 0
 
-    def checkCollision(self, mapManager, obj, speedX, speedY):
+    def checkCollision(self, mapManager, obj, speedX, speedY, guiManager):
         """
         Check tile and object collision for an object
         :param mapManager:
@@ -122,92 +143,92 @@ class PhysicsManager(object):
         checkX = True
         checkY = True
 
+        topLeftYCollision = self.checkObjectCollision(mapManager, obj, topLeftY)
+        topRightYCollision = self.checkObjectCollision(mapManager, obj, topRightY)
+        bottomLeftYCollision = self.checkObjectCollision(mapManager, obj, bottomLeftY)
+        bottomRightYCollision = self.checkObjectCollision(mapManager, obj, bottomRightY)
+        topLeftXCollision = self.checkObjectCollision(mapManager, obj, topLeftX)
+        topRightXCollision = self.checkObjectCollision(mapManager, obj, topRightX)
+        bottomLeftXCollision = self.checkObjectCollision(mapManager, obj, bottomLeftX)
+        bottomRightXCollision = self.checkObjectCollision(mapManager, obj, bottomRightX)
+
         # Falling
         if (speedY > 0):
             (chkX, chkY) = self.checkTileCollision(mapManager, obj, (bottomRightY, bottomLeftY), False)
 
-            if not chkY:
+            if not chkY and checkY:
                 checkY = False
 
             # Check collision with other obj
-            (chkX, chkY) = self.checkObjectCollision(mapManager, obj, (bottomRightY, bottomLeftY), False, speedY)
-
-            if not chkY:
+            if bottomLeftYCollision or bottomRightYCollision:
                 checkY = False
 
         # Jumping
         else:
             (chkX, chkY) = self.checkTileCollision(mapManager, obj, (topRightY, topLeftY), False)
 
-            if not chkY:
+            if not chkY and checkY:
                 checkY = False
 
             # Check collision with other obj
-            (chkX, chkY) = self.checkObjectCollision(mapManager, obj, (topRightY, topLeftY), False, speedY)
-
-            if not chkY:
+            if topLeftYCollision or topRightYCollision:
                 checkY = False
 
         # Right
         if (speedX > 0):
             (chkX, chkY) = self.checkTileCollision(mapManager, obj, (topRightX, bottomRightX), True)
-            if not chkX:
+            if not chkX and checkX:
                 checkX = False
 
             # Check collision with other obj
-            (chkX, chkY) = self.checkObjectCollision(mapManager, obj, (topRightX, bottomRightX), True, speedX)
-
-            if not chkX:
+            if topRightXCollision or bottomRightXCollision:
+                if obj.name == ObjectName.PLAYER and obj.pushMode:
+                    self.checkPushable([topRightXCollision,bottomRightXCollision],
+                                       obj, speedX, guiManager)
                 checkX = False
 
         # Left
         else:
             (chkX, chkY) = self.checkTileCollision(mapManager, obj, (topLeftX, bottomLeftX), True)
-            if not chkX:
+            if not chkX and checkX:
                 checkX = False
 
             # Check collision with other obj
-            (chkX, chkY) = self.checkObjectCollision(mapManager, obj, (topLeftX, bottomLeftX), True, speedX)
-
-            if not chkX:
+            if bottomLeftXCollision or topLeftXCollision:
+                if obj.name == ObjectName.PLAYER and obj.pushMode:
+                    self.checkPushable([topRightXCollision,bottomRightXCollision],
+                                       obj, speedX, guiManager)
                 checkX = False
 
         return (checkX, checkY)
 
+    def checkPushable(self, objectList, player, speedX, guiManager):
+        pushFactor = 2 if player.empowerNext or player.isEmpoweredPushing else 1
+        pushPower = pushFactor * player.pushPower
+        for obj in objectList:
+            if obj and objectProperties[obj.name]["isMovable"] and pushPower >= obj.weight:
+                if player.empowerNext:
+                    player.isEmpoweredPushing = True
+                    player.consumeEmpower(guiManager)
+                else:
+                    player.isPushing = True
+                obj.velocityX += speedX/3
+                if obj.velocityX > settings.MAX_VELOCITY_X/3:
+                    obj.velocityX = settings.MAX_VELOCITY_X
 
-    def checkObjectCollision(self, mapManager, obj, corners, isXAxis, speed):
+    def checkObjectCollision(self, mapManager, obj, corner):
         """
         Check if a corner collide an object
         :param mapManager:
         :param corner:
-        :return: True/False
+        :return: object/None
         """
-
-        isPlayer = (obj.name == ObjectName.PLAYER)
-
-        for corner in corners:
-            for object in mapManager.objects.values():
-                if object != obj:
-                    rect = pygame.Rect(object.realX, object.realY, object.width, object.height)
-                    if rect.collidepoint(corner):
-                        if isXAxis:
-                            if isPlayer:
-                                object.velocityX += speed
-                                object.contactFrameCounter = 0
-                                object.isBeingPushed = True
-                            return (False, True)
-                        else:
-                            return (True, False)
-                    elif isPlayer:
-                        object.contactFrameCounter += 1
-
-                        if object.contactFrameCounter > 2 and object.isBeingPushed:
-                            object.velocityX = 0
-                            object.isBeingPushedX = False
-
-
-
-            return (True, True)
+        for object in mapManager.objects.values():
+            if object != obj:
+                rect = pygame.Rect(object.realX,object.realY,object.width,object.height)
+                if rect.collidepoint(corner):
+                    return object
+        return None
 
     def checkTileCollision(self, mapManager, obj, corners, isXAxis):
         """
@@ -230,7 +251,6 @@ class PhysicsManager(object):
 
             if mapManager.tiles[tileY][tileX] not in self.nonBlockingTiles:
                 if isXAxis:
-
                     return (False, True)
                 else:
                     return (True, False)
