@@ -405,14 +405,14 @@ class TextBuffer(object):
         self.textsList[self.nextIndex] = textSurface
         self.nextIndex = (self.nextIndex + 1) % self.maxTexts
 
-    def scrollNextText(self):
+    def scrollNextText(self, scrollTime=1):
         """
         increase scroll number is possible
         :return: Nothing
         """
         size = abs(self.nextIndex - self.topIndex)
-        if self.scrollingNumber < size:
-            self.scrollingNumber += 1
+        if (self.scrollingNumber + scrollTime) <= size:
+            self.scrollingNumber += scrollTime
             self.isScrolling = True
 
     def applyScrolling(self,deltaTime):
