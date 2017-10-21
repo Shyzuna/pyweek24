@@ -11,7 +11,7 @@ from modules.displayManager import displayManager
 from modules.inputManager import inputManager
 from modules.guiManager import guiManager
 from modules.mapManager import mapManager
-from modules.PhysicsManager import physicsManager
+from modules.physicsManager import physicsManager
 from modules.scrollManager import scrollManager
 import settings.settings as settings
 

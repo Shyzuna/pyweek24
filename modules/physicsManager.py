@@ -54,43 +54,42 @@ class PhysicsManager(object):
 
             (checkX, checkY) = self.checkCollision(mapManager, object, speedX, speedY)
 
-            if object.name == ObjectName.PLAYER:
-                if checkX:
-                    scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
+            if checkX:
+                scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
 
-                    if scrollValue:
-                        if scrollValue[0] > 0 and speedX > 0 or scrollValue[0] < 0 and speedX < 0:
-                            mapManager.scrollMap(scrollValue[0], 0)
+                if scrollValue:
+                    if scrollValue[0] > 0 and speedX > 0 or scrollValue[0] < 0 and speedX < 0:
+                        mapManager.scrollMap(scrollValue[0], 0)
 
-                            if checkY and object.isOnGround:
-                                object.realY += speedY
+                        if checkY and object.isOnGround:
+                            object.realY += speedY
 
-                                if speedY > 0:
-                                    object.isOnGround = False
-                            elif not checkY:
-                                object.isOnGround = True
+                            if speedY > 0:
+                                object.isOnGround = False
+                        elif not checkY:
+                            object.isOnGround = True
 
-                    object.realX += speedX
-                if checkY:
-                    scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
+                object.realX += speedX
+            if checkY:
+                scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
 
-                    if scrollValue:
-                        if scrollValue[1] > 0 and speedY > 0 or scrollValue[1] < 0 and speedY < 0:
-                            mapManager.scrollMap(0, scrollValue[1])
+                if scrollValue:
+                    if scrollValue[1] > 0 and speedY > 0 or scrollValue[1] < 0 and speedY < 0:
+                        mapManager.scrollMap(0, scrollValue[1])
 
-                            if checkX:
-                                object.realX += speedX
+                        if checkX:
+                            object.realX += speedX
 
-                    object.realY += speedY
+                object.realY += speedY
 
-                    if speedY > 0:
-                        object.isOnGround = False
+                if speedY > 0:
+                    object.isOnGround = False
+            else:
+                if speedY > 0:
+                    object.isOnGround = True
                 else:
-                    if speedY > 0:
-                        object.isOnGround = True
-                    else:
-                        object.isOnGround = False
-                        object.velocityY = 0
+                    object.isOnGround = False
+                    object.velocityY = 0
 
     def checkCollision(self, mapManager, obj, speedX, speedY):
         """
