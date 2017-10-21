@@ -101,9 +101,14 @@ class GameManager(object):
         inputManager.applyPlayerMoveEvents(self.managerList, self.deltaTime)
         physicsManager.applyGravity(mapManager)
         physicsManager.computeVelocity(mapManager, scrollManager, self.deltaTime)
+        dialogList = physicsManager.checkDialogCollision(mapManager)
+        for dialog in dialogList:
+            dialog.play(guiManager)
 
         for object in mapManager.objects.values():
             object.animatedSprite.playAnimation(self.deltaTime)
+
+        mapManager.updateDialogs(guiManager, self.deltaTime)
         guiManager.updateHud(self.deltaTime)
         displayManager.display(mapManager,guiManager)
 

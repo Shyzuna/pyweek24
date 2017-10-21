@@ -14,6 +14,7 @@ from objects.enums import ObjectType as objectType
 from objects.enums import ObjectName as objectName
 import objects.gameObjects as gameObjects
 import settings.settings as settings
+from objects.dialog import Dialog
 
 class MapManager:
     """
@@ -36,7 +37,8 @@ class MapManager:
         self.mapSizeY = 0
         self.objects = {}
         self.tiles = []
-        self.dialogs = []
+        self.dialogsTile = []
+        self.dialogs = {}
         self.currentRect = pygame.Rect(0, 0, settings.SCREEN_WIDTH, settings.SCREEN_PLAYING_HEIGHT)
 
     def load(self, name, img):
@@ -78,7 +80,10 @@ class MapManager:
             print("dialogs")
             line = mapFile.readline()
             while settings.DATA_DELIMITER not in line:
-                self.dialogs.append(list(line.rstrip()))
+                self.dialogsTile.append(list(line.rstrip()))
+                for c in list(line.rstrip()):
+                    if c != '0' and c not in self.dialogs.keys():
+                        self.dialogs[c] = Dialog(c)
                 line = mapFile.readline()
 
             print(self.dialogs)
@@ -120,6 +125,15 @@ class MapManager:
 
             print(objectType.GAME_OBJECT.value)
 
+    def updateDialogs(self, guiManager, deltaTime):
+        """
+        Update all dialogs
+        :param guiManager:
+        :param deltaTime:
+        :return:
+        """
+        for dialog in self.dialogs.values():
+            dialog.update(guiManager, deltaTime)
 
     def scrollMap(self, x, y):
         """

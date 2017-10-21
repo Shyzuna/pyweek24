@@ -147,7 +147,7 @@ class GUIManager(object):
         #    self.hudElem[k] = pygame.transform.scale(e,(int(w * ratioX),int(h * ratioY)))
 
         w, h = self.hudElem["hudBar"].get_size()
-        self.hudElem["hudBar"] = pygame.transform.scale(self.hudElem["hudBar"], (int(w * ratioX), int(h * ratioY)))
+        self.hudElem["hudBar"] = pygame.transform.scale(self.hudElem["hudBar"], (int(w * ratioX), int(h * ratioY) - 40))
         w, h = self.hudElem["hudBar"].get_size()
 
         # Init text buffer
@@ -371,16 +371,6 @@ class TextBuffer(object):
         pygame.draw.polygon(self.carretSurface,Colors.BLACK.value,pointList)
         self.carretX = settings.SCREEN_WIDTH - 15
         self.carretY = settings.SCREEN_HEIGHT - 15
-
-        # Test
-        self.renderText("test")
-        self.renderText("sdfgdsfg dfg dfqsg sdf cvbxgtru r zrte ertyriughjr- retze fg dfgsdfgsdfgdf sdfgdsfg sfdgsfdg sdfgsdfg sfdgsdfg lioiuy ftb b ôikgfgv jghjh")
-        self.renderText("tutut")
-        self.renderText("tutut")
-        self.renderText("tutut")
-        self.renderText("Bonjour Kevin")
-        self.renderText("Avances-tu bien ? =3")
-        self.renderText("Est-ce que cela te plait de faire du jeu ?")
 
 
     def renderText(self, text):
