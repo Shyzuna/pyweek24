@@ -99,10 +99,10 @@ ObjectsAnimations = {
             {
                 "name": AnimationType.IDLE,
                 "direction": Direction.RIGHT,
-                "spriteNumber": 2,
-                "line": 3,
+                "spriteNumber": 1,
+                "line": 0,
                 "isDefault": True,
-                "timeDuration": 1000
+                "timeDuration": -1
             }
         ]
     },
