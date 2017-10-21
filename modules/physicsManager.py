@@ -213,7 +213,29 @@ class PhysicsManager(object):
                     return (False, True)
                 else:
                     return (True, False)
-
         return (True, True)
+
+
+    def checkDialogCollision(self, mapManager):
+        """
+        Check dialog collision must be done after moving the player
+        :param self:
+        :param mapManager:
+        :return: list of dialog
+        """
+        # TODO: Maybe could use the corner in checkcollision fct but not enough time ...
+        dialogList = []
+        player = mapManager.objects[ObjectName.PLAYER]
+        topLeft = (player.realX, player.realY)
+        topRight = (player.realX + player.width, player.realY)
+        bottomLeft = (player.realX, player.realY + player.height)
+        bottomRight = (player.realX + player.width, player.realY + player.height)
+        for x,y in [topLeft,topRight,bottomLeft,bottomRight]:
+            tileX = math.floor(x / mapManager.tileWidth)
+            tileY = math.floor(y / mapManager.tileHeight)
+            dialog = mapManager.dialogsTile[tileY][tileX]
+            if dialog not in self.nonBlockingTiles:
+                dialogList.append(mapManager.dialogs[dialog])
+        return dialogList
 
 physicsManager = PhysicsManager()
