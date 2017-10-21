@@ -84,6 +84,16 @@ class Ninja(GameObject):
 
         super(Ninja, self).__init__(name, type, x, y, tileX, tileY, width, height)
 
+        self.isFree = False
+
+    def setFree(self):
+        self.isFree = True
+
+    def blit(self, mapManager, screen):
+        if not self.isFree:
+            super(Ninja, self).blit(mapManager, screen)
+
+
 class Player(GameObject):
     """
     A player
@@ -107,6 +117,7 @@ class Player(GameObject):
         self.disabled = False
         self.maxDisabledTime = 500
         self.currentDisabledTime = 0
+        self.ninjaToFree = []
 
     def updateEmpoweringPushingTime(self, deltaTime):
         if self.isEmpoweredPushing:
@@ -157,6 +168,11 @@ class Player(GameObject):
         self.velocityX = signe * (settings.MAX_VELOCITY_X/2.5)
         signe = -1 if self.velocityY > 0 else 1
         self.velocityY = signe * (settings.MAX_VELOCITY_Y/2.5)
+
+    def freeNinjas(self, guiManager):
+        for ninja in self.ninjaToFree:
+            ninja.setFree()
+            guiManager.addNinjaBar()
 
     def blit(self, mapManager, screen):
         if self.realX >= mapManager.currentRect.x - mapManager.tileWidth \

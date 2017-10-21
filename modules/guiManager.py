@@ -163,14 +163,6 @@ class GUIManager(object):
         self.innerSpace = leftHeight / (self.barNumber + 1)
 
         self.cooldownBars = []
-        for i in range(0, self.barNumber):
-            bar = {
-                "displayed": True,
-                "percent": 0,
-                "alive": True,
-                "empowering": False
-            }
-            self.cooldownBars.append(bar)
         self.empoweringWaiting = -1
         self.loadSpeed = 10
         self.unloadSpeed = -25
@@ -216,6 +208,15 @@ class GUIManager(object):
         if self.currentDeadIcoTime > self.deadIcoTime and self.lifeNumber > 0:
             self.currentDeadIcoTime = 0
             self.deadIco = False
+
+    def addNinjaBar(self):
+        bar = {
+            "displayed": True,
+            "percent": 0,
+            "alive": True,
+            "empowering": False
+        }
+        self.cooldownBars.append(bar)
 
     def empowerSpell(self):
         """

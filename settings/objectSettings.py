@@ -110,7 +110,7 @@ ObjectsAnimations = {
         'imgPath': os.path.join(settings.TRAPS_PATH, "c.png"),
         'maxSpriteW': 1,
         'maxSpriteH': 1,
-        'imgRatio': 2.1,
+        'imgRatio': 2.4,
         'animations': [
             {
                 "name": AnimationType.IDLE,

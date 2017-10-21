@@ -74,6 +74,8 @@ class InputManager(object):
                     player.empowerNextSpell(guiManager)
                 elif event.key in [pygame.K_LALT,pygame.K_RALT]:
                     player.disablePushMode()
+                elif event.key == pygame.K_SPACE:
+                    player.freeNinjas(guiManager)
             elif event.type == pygame.KEYDOWN:
                 if event.key in self.directionState.keys():
                     self.directionState[event.key] = True
