@@ -206,7 +206,6 @@ class PhysicsManager(object):
             tileY = math.floor(y / mapManager.tileHeight)
 
             if tileX >= mapManager.width or tileY >= mapManager.height or tileX < 0 or tileY < 0:
-                print("out")
                 return (False, False)
 
             if mapManager.tiles[tileY][tileX] not in self.nonBlockingTiles:
