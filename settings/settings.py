@@ -12,6 +12,7 @@ TRAPS_PATH = os.path.join(IMGS_PATH, 'traps')
 HUD_PATH = os.path.join(IMGS_PATH, 'hud')
 FONTS_PATH = os.path.join('data', 'fonts')
 DIALOGS_PATH = os.path.join('data', 'dialogs')
+END_SCREEN_PATH = os.path.join('data', 'imgs', 'screens', 'victory.png')
 
 # Display
 SCREEN_WIDTH = 1200
@@ -37,3 +38,4 @@ MAX_VELOCITY_Y = 300
 PLAYER_ID = 'player1'
 
 INTRO_DIALOG_ID = '1'
+END_DIALOG_ID = '7'

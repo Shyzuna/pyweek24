@@ -58,6 +58,9 @@ class Dialog(object):
         :return:
         """
         if self.isPlaying:
+            if self.name == settings.END_DIALOG_ID:
+                gameManager.gameFinished = True
+
             self.currentTime += deltaTime
             if self.currentTime > self.content[self.currentDial]["time"]:
                 self.currentDial += 1

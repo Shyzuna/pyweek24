@@ -147,4 +147,18 @@ class DisplayManager(object):
         # Update screen
         pygame.display.flip()
 
+    def displayEndScreen(self):
+        """
+        Display all elements
+        :return: Nothing
+        """
+        # Clear screen
+        self.screen.fill(Colors.WHITE.value)
+        img = pygame.image.load(settings.END_SCREEN_PATH)
+
+        self.screen.blit(img, (0, 0))
+
+        # Update screen
+        pygame.display.flip()
+
 displayManager = DisplayManager()

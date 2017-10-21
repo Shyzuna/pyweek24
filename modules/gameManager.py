@@ -45,6 +45,7 @@ class GameManager(object):
         self.fps = settings.FPS
         self.showFps = True
         self.introFinished = True
+        self.gameFinished = False
 
         self.managerList = {
             "displayManager": displayManager,
