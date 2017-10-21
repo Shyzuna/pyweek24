@@ -86,7 +86,7 @@ ObjectsAnimations = {
         'imgPath': os.path.join(settings.OBJECTS_PATH, "box.png"),
         'maxSpriteW': 1,
         'maxSpriteH': 1,
-        'imgRatio': 2,
+        'imgRatio': 2.2,
         'animations': [
             {
                 "name": AnimationType.IDLE,

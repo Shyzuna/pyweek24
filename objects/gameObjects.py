@@ -29,6 +29,8 @@ class GameObject:
         self.velocityY = 0
         self.velocityX = 0
         self.isOnGround = False
+        self.isBeingPushed = False
+        self.contactFrameCounter = 0
 
         self.spriteSheet = pygame.image.load(ObjectsAnimations[name]['imgPath'])
         self.animatedSprite = AnimatedSprite(
