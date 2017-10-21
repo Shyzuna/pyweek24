@@ -4,6 +4,7 @@ from objects.animation import AnimatedSprite
 from settings.objectSettings import ObjectsAnimations
 
 import pygame
+import sys
 
 class GameObject:
     '''
@@ -103,12 +104,23 @@ class Player(GameObject):
         self.maxEmpoweringPushingTime = 2000
         self.currentEmpoweringPushingTime = 0
 
+        self.disabled = False
+        self.maxDisabledTime = 500
+        self.currentDisabledTime = 0
+
     def updateEmpoweringPushingTime(self, deltaTime):
         if self.isEmpoweredPushing:
             self.currentEmpoweringPushingTime += deltaTime
             if self.currentEmpoweringPushingTime > self.maxEmpoweringPushingTime:
                 self.currentEmpoweringPushingTime = 0
                 self.isEmpoweredPushing = False
+
+    def updateDisabledTime(self, deltaTime):
+        if self.disabled:
+            self.currentDisabledTime += deltaTime
+            if self.currentDisabledTime > self.maxDisabledTime:
+                self.currentDisabledTime = 0
+                self.disabled = False
 
     def enablePushMode(self):
         self.pushMode = True
@@ -136,6 +148,25 @@ class Player(GameObject):
         """
         self.empowerNext = False
         guiManager.consumeWaitingEmpowering()
+
+    def takeDmg(self):
+        self.disabled = True
+        self.currentDisabledTime = 0
+        signe = -1 if self.velocityX > 0 else 1
+        self.velocityX = signe * (settings.MAX_VELOCITY_X/2.5)
+        signe = -1 if self.velocityY > 0 else 1
+        self.velocityY = signe * (settings.MAX_VELOCITY_Y/2.5)
+
+    def blit(self, mapManager, screen):
+        if self.realX >= mapManager.currentRect.x - mapManager.tileWidth \
+            and self.realX < mapManager.currentRect.x + mapManager.currentRect.w + mapManager.tileWidth\
+            and self.realY >= mapManager.currentRect.y - mapManager.tileHeight \
+            and self.realY < mapManager.currentRect.x + mapManager.currentRect.h + mapManager.tileHeight :
+
+            self.x = self.realX - mapManager.currentRect.x
+            self.y = self.realY - mapManager.currentRect.y
+            if not self.disabled or ((self.currentDisabledTime // 50) % 2) == 0:
+                screen.blit(self.animatedSprite.spriteSheet, (self.x, self.y), self.animatedSprite.currentRect)
 
 class Trap(GameObject):
     """

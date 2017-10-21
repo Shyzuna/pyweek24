@@ -9,6 +9,7 @@ TODO:
 
 from settings.objectSettings import ObjectName
 from settings.objectSettings import objectProperties
+from objects.enums import ObjectType
 
 import settings.settings as settings
 
@@ -68,6 +69,7 @@ class PhysicsManager(object):
 
             if object.name == ObjectName.PLAYER:
                 object.updateEmpoweringPushingTime(deltaTime)
+                object.updateDisabledTime(deltaTime)
 
             speedY = (object.velocityY * deltaTime) / 1000
             speedX = (object.velocityX * deltaTime) / 1000
@@ -161,6 +163,9 @@ class PhysicsManager(object):
 
             # Check collision with other obj
             if bottomLeftYCollision or bottomRightYCollision:
+                if obj.name == ObjectName.PLAYER:
+                    self.checkDmgAble([topRightYCollision, bottomRightYCollision],
+                                          obj, guiManager)
                 checkY = False
 
         # Jumping
@@ -172,6 +177,9 @@ class PhysicsManager(object):
 
             # Check collision with other obj
             if topLeftYCollision or topRightYCollision:
+                if obj.name == ObjectName.PLAYER:
+                    self.checkDmgAble([topLeftYCollision, topRightYCollision],
+                                          obj, guiManager)
                 checkY = False
 
         # Right
@@ -185,6 +193,9 @@ class PhysicsManager(object):
                 if obj.name == ObjectName.PLAYER and obj.pushMode:
                     self.checkPushable([topRightXCollision,bottomRightXCollision],
                                        obj, speedX, guiManager)
+                if obj.name == ObjectName.PLAYER:
+                    self.checkDmgAble([topRightXCollision, bottomRightXCollision],
+                                          obj, guiManager)
                 checkX = False
 
         # Left
@@ -196,8 +207,11 @@ class PhysicsManager(object):
             # Check collision with other obj
             if bottomLeftXCollision or topLeftXCollision:
                 if obj.name == ObjectName.PLAYER and obj.pushMode:
-                    self.checkPushable([topRightXCollision,bottomRightXCollision],
+                    self.checkPushable([bottomLeftXCollision,topLeftXCollision],
                                        obj, speedX, guiManager)
+                if obj.name == ObjectName.PLAYER:
+                    self.checkDmgAble([bottomLeftXCollision, topLeftXCollision],
+                                      obj, guiManager)
                 checkX = False
 
         return (checkX, checkY)
@@ -215,6 +229,12 @@ class PhysicsManager(object):
                 obj.velocityX += speedX/3
                 if obj.velocityX > settings.MAX_VELOCITY_X/3:
                     obj.velocityX = settings.MAX_VELOCITY_X
+
+    def checkDmgAble(self, objectList, player, guiManager):
+        for obj in objectList:
+            if obj and obj.type == ObjectType.TRAP:
+                if not player.disabled:
+                    player.takeDmg()
 
     def checkObjectCollision(self, mapManager, obj, corner):
         """

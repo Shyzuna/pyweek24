@@ -113,6 +113,9 @@ class InputManager(object):
         guiManager = managerList["guiManager"]
         player = mapManager.objects[settings.PLAYER_ID]
 
+        if player.disabled:
+            return
+
         if player.isOnGround:
             if self.directionState[pygame.K_RIGHT]:
                 player.velocityX = settings.MAX_VELOCITY_X
