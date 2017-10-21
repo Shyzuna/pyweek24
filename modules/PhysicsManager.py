@@ -126,6 +126,10 @@ class PhysicsManager(object):
         topRightYCollision = self.checkObjectCollision(mapManager, obj, topRightY)
         bottomLeftYCollision = self.checkObjectCollision(mapManager, obj, bottomLeftY)
         bottomRightYCollision = self.checkObjectCollision(mapManager, obj, bottomRightY)
+        topLeftXCollision = self.checkObjectCollision(mapManager, obj, topLeftX)
+        topRightXCollision = self.checkObjectCollision(mapManager, obj, topRightX)
+        bottomLeftXCollision = self.checkObjectCollision(mapManager, obj, bottomLeftX)
+        bottomRightXCollision = self.checkObjectCollision(mapManager, obj, bottomRightX)
 
         # Falling
         if (speedY > 0):
@@ -156,7 +160,7 @@ class PhysicsManager(object):
                 checkX = False
 
             # Check collision with other obj
-            if topRightYCollision or bottomRightYCollision:
+            if topRightXCollision or bottomRightXCollision:
                 checkX = False
 
         # Left
@@ -166,7 +170,7 @@ class PhysicsManager(object):
                 checkX = False
 
             # Check collision with other obj
-            if bottomLeftYCollision or topLeftYCollision:
+            if bottomLeftXCollision or topLeftXCollision:
                 checkX = False
 
         return (checkX, checkY)
