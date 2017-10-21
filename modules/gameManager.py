@@ -32,6 +32,14 @@ class GameManager(object):
         Init clock / FPS / manager list
         :return: Nothing
         """
+        pass
+
+    def init(self):
+        """
+        Init stuff
+        :return: Nothing
+        """
+
         self.done = False
         self.clock = pygame.time.Clock()
         self.fps = settings.FPS
@@ -47,18 +55,15 @@ class GameManager(object):
             "physicsManager": physicsManager,
         }
 
-
-    def init(self):
-        """
-        Init stuff
-        :return: Nothing
-        """
+        inputManager.init()
+        mapManager.init()
         displayManager.init()
         guiManager.init()
         guiManager.initHud()
         mapManager.load('test.map',[])
         displayManager.loadTilesImg(mapManager.tileWidth,mapManager.tileHeight)
         displayManager.createMapSurface(mapManager)
+        self.player = mapManager.objects["player1"]
 
     def start(self):
         """
@@ -66,8 +71,10 @@ class GameManager(object):
         :return: Nothing
         """
         # TODO smth better ?
-        self.mainLoop(self.menuLoop)
-        self.mainLoop(self.gameLoop)
+        while 1:
+            self.mainLoop(self.menuLoop)
+            self.mainLoop(self.gameLoop)
+            self.init()
 
     def mainLoop(self,loop):
         """
@@ -99,23 +106,32 @@ class GameManager(object):
         :return: Nothing
         """
 
+        if guiManager.endofGame:
+            self.player.disabled = True
+            self.player.animatedSprite.changeCurrentAnimation(AnimationType.DEAD)
+
         inputManager.handleEvents(guiManager, displayManager, mapManager)
+        self.done = inputManager.exitLoop
 
         if self.introFinished:
             inputManager.applyPlayerMoveEvents(self.managerList, self.deltaTime)
 
-        physicsManager.applyGravity(mapManager)
-        physicsManager.applyFriction(mapManager)
-        physicsManager.computeVelocity(mapManager, scrollManager, guiManager, self.deltaTime)
-        dialogList = physicsManager.checkDialogCollision(mapManager)
-        for dialog in dialogList:
-            dialog.play(guiManager)
+        if not guiManager.endofGame:
+            physicsManager.applyGravity(mapManager)
+            physicsManager.applyFriction(mapManager)
+            physicsManager.computeVelocity(mapManager, scrollManager, guiManager, self.deltaTime)
+            dialogList = physicsManager.checkDialogCollision(mapManager)
+            for dialog in dialogList:
+                dialog.play(guiManager)
+
+            mapManager.updateDialogs(guiManager, self.deltaTime, self)
 
         for object in mapManager.objects.values():
             object.animatedSprite.playAnimation(self.deltaTime)
 
-        mapManager.updateDialogs(guiManager, self.deltaTime, self)
         guiManager.updateHud(self.deltaTime)
         displayManager.display(mapManager,guiManager)
+
+
 
 gameManager = GameManager()

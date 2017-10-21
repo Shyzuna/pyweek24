@@ -149,8 +149,9 @@ class Player(GameObject):
         self.empowerNext = False
         guiManager.consumeWaitingEmpowering()
 
-    def takeDmg(self):
+    def takeDmg(self, guiManager):
         self.disabled = True
+        guiManager.looseLife()
         self.currentDisabledTime = 0
         signe = -1 if self.velocityX > 0 else 1
         self.velocityX = signe * (settings.MAX_VELOCITY_X/2.5)

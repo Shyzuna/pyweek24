@@ -135,6 +135,8 @@ class GUIManager(object):
             "ninjaIcon": pygame.image.load(os.path.join(settings.HUD_PATH, "ninjaIcon.png")),
             "ninjaIco": pygame.image.load(os.path.join(settings.HUD_PATH, "ninjaIco.png")),
             "deadIco": pygame.image.load(os.path.join(settings.HUD_PATH, "deadIco.png")),
+            "playerDeadIco": pygame.image.load(os.path.join(settings.HUD_PATH, "playerDeadIco.png")),
+            "playerIco": pygame.image.load(os.path.join(settings.HUD_PATH, "playerIco.png")),
         }
 
         # Resize Bar
@@ -178,6 +180,42 @@ class GUIManager(object):
         self.classicBar.fill(Colors.WHITE.value)
         self.classicBar.set_colorkey(Colors.WHITE.value)
         pygame.draw.rect(self.classicBar, Colors.BLACK.value, self.classicBar.get_rect(),2)
+
+        # Life
+        pygame.font.init()
+
+        self.fontSize = 20
+        self.font = pygame.font.Font(os.path.join(settings.FONTS_PATH, "arial.ttf"), self.fontSize)
+        self.lifeNumber = 3
+        self.lifeSurface = self.font.render(str(self.lifeNumber),1,Colors.BLACK.value)
+        self.lifeX = int(settings.SCREEN_WIDTH * 0.3)
+        self.lifeY = int(settings.SCREEN_HEIGHT - ((h + self.lifeSurface.get_size()[1])/2))
+        self.lifeIcoX = self.lifeX + self.lifeSurface.get_size()[0] + 10
+        self.lifeIcoY = int(settings.SCREEN_HEIGHT - ((h + self.hudElem["playerIco"].get_size()[1])/2))
+        self.deadIcoTime = 1000
+        self.currentDeadIcoTime = 0
+        self.deadIco = False
+
+        self.endofGame = False
+
+
+    def looseLife(self):
+        w, h = self.hudElem["hudBar"].get_size()
+        if self.lifeNumber > 0:
+            self.lifeNumber -= 1
+            self.lifeSurface = self.font.render(str(self.lifeNumber),1,Colors.BLACK.value)
+            self.lifeX = int(settings.SCREEN_WIDTH * 0.3)
+            self.lifeY = int(settings.SCREEN_HEIGHT - ((h + self.lifeSurface.get_size()[1])/2))
+            self.lifeIcoX = self.lifeX + self.lifeSurface.get_size()[0] + 10
+            self.lifeIcoY = int(settings.SCREEN_HEIGHT - ((h + self.hudElem["playerIco"].get_size()[1])/2))
+            self.currentDeadIcoTime = 0
+            self.deadIco = True
+
+    def updateDeadIco(self, deltaTime):
+        self.currentDeadIcoTime += deltaTime
+        if self.currentDeadIcoTime > self.deadIcoTime and self.lifeNumber > 0:
+            self.currentDeadIcoTime = 0
+            self.deadIco = False
 
     def empowerSpell(self):
         """
@@ -252,6 +290,11 @@ class GUIManager(object):
                 startY += self.barHeight + self.innerSpace
                 startX = 20
             i += 1
+
+        self.screen.blit(self.lifeSurface,(self.lifeX,self.lifeY))
+        icoType = "playerDeadIco" if self.deadIco else "playerIco"
+        self.screen.blit(self.hudElem[icoType],(self.lifeIcoX,self.lifeIcoY))
+
         self.textBuffer.display(self.screen)
 
     def displayMenu(self):
@@ -296,14 +339,20 @@ class GUIManager(object):
         # Update screen
         pygame.display.flip()
 
-    def updateHud(self,deltaTime):
+    def updateHud(self, deltaTime):
         """
         Update the hud
         :param deltaTime:
         :return: Nothing
         """
+
         self.textBuffer.applyScrolling(deltaTime)
         self.updateBars(deltaTime)
+        self.updateDeadIco(deltaTime)
+        if self.lifeNumber == 0 and not self.endofGame:
+            self.textBuffer.clearAllText()
+            self.textBuffer.renderText("Game Over")
+            self.endofGame = True
 
 class TextBuffer(object):
     """
@@ -372,6 +421,9 @@ class TextBuffer(object):
         self.carretX = settings.SCREEN_WIDTH - 15
         self.carretY = settings.SCREEN_HEIGHT - 15
 
+    def clearAllText(self):
+        size = abs(self.nextIndex - self.topIndex)
+        self.scrollNextText(size)
 
     def renderText(self, text):
         """

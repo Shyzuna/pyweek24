@@ -25,6 +25,9 @@ class InputManager(object):
         Not much to do here currently
         :return: Nothing
         """
+        pass
+
+    def init(self):
         self.directionState = {
             pygame.K_UP: False,
             pygame.K_DOWN: False,
@@ -34,6 +37,7 @@ class InputManager(object):
 
         self.jump_max = 500
         self.jumping = False
+        self.exitLoop = False
 
     def handleFullScreen(self,displayManager,guiManager,event):
         """
@@ -62,7 +66,10 @@ class InputManager(object):
                 if event.key in self.directionState.keys():
                     self.directionState[event.key] = False
                 elif event.key == pygame.K_RETURN:
-                    guiManager.textBuffer.scrollNextText()
+                    if guiManager.endofGame:
+                        self.exitLoop = True
+                    else:
+                        guiManager.textBuffer.scrollNextText()
                 elif event.key in [pygame.K_RCTRL, pygame.K_LCTRL]:
                     player.empowerNextSpell(guiManager)
                 elif event.key in [pygame.K_LALT,pygame.K_RALT]:

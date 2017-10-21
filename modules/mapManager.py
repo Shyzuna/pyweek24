@@ -28,7 +28,9 @@ class MapManager:
         """
         Constructor
         """
+        pass
 
+    def init(self):
         self.width = 0
         self.height = 0
         self.tileWidth = 0
@@ -40,6 +42,7 @@ class MapManager:
         self.dialogsTile = []
         self.dialogs = {}
         self.currentRect = pygame.Rect(0, 0, settings.SCREEN_WIDTH, settings.SCREEN_PLAYING_HEIGHT)
+
 
     def load(self, name, img):
         """

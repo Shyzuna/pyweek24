@@ -79,6 +79,14 @@ ObjectsAnimations = {
                 "line": 2,
                 "isDefault": True,
                 "timeDuration": 1000
+            },
+            {
+                "name": AnimationType.DEAD,
+                "direction": Direction.RIGHT,
+                "spriteNumber": 2,
+                "line": 3,
+                "isDefault": False,
+                "timeDuration": 1000
             }
         ]
     },
@@ -91,10 +99,10 @@ ObjectsAnimations = {
             {
                 "name": AnimationType.IDLE,
                 "direction": Direction.RIGHT,
-                "spriteNumber": 1,
-                "line": 0,
+                "spriteNumber": 2,
+                "line": 3,
                 "isDefault": True,
-                "timeDuration": -1
+                "timeDuration": 1000
             }
         ]
     },

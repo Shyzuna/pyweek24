@@ -47,7 +47,8 @@ class AnimationType(Enum):
     Enum for animation
     """
     IDLE = 0,
-    WALKING = 1
+    WALKING = 1,
+    DEAD = 2
 
 class Direction(Enum):
     """

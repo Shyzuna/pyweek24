@@ -7,6 +7,7 @@ TODO:
 *
 """
 
+from objects.enums import ObjectName,AnimationType
 import pygame
 
 class AnimatedSprite(object):
@@ -80,6 +81,7 @@ class AnimatedSprite(object):
         :param deltaTime:
         :return: Nothing
         """
+
         animation = self.animeList[self.currentAnim] if self.currentAnim else self.animeList[self.defaultAnim]
         if not animation:
             raise RuntimeError("No animation loaded")
@@ -104,6 +106,9 @@ class AnimatedSprite(object):
         :param name:
         :return: Nothing
         """
+        if self.currentAnim == AnimationType.DEAD:
+            return
+
         if name == self.currentAnim:
             return
 

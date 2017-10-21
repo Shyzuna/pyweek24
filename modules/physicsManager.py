@@ -234,7 +234,7 @@ class PhysicsManager(object):
         for obj in objectList:
             if obj and obj.type == ObjectType.TRAP:
                 if not player.disabled:
-                    player.takeDmg()
+                    player.takeDmg(guiManager)
 
     def checkObjectCollision(self, mapManager, obj, corner):
         """
