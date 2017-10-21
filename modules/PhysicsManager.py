@@ -61,10 +61,6 @@ class PhysicsManager(object):
                         if scrollValue[0] > 0 and speedX > 0 or scrollValue[0] < 0 and speedX < 0:
                             mapManager.scrollMap(scrollValue[0], 0)
 
-                            for obj in mapManager.objects.values():
-                                if obj.name != ObjectName.PLAYER:
-                                    obj.realX -= scrollValue[0]
-
                             if checkY and object.isOnGround:
                                 object.realY += speedY
 
@@ -72,10 +68,8 @@ class PhysicsManager(object):
                                     object.isOnGround = False
                             elif not checkY:
                                 object.isOnGround = True
-                        else:
-                            object.realX += speedX
-                    else:
-                        object.realX += speedX
+
+                    object.realX += speedX
                 if checkY:
                     scrollValue = scrollManager.isScrollNeeded(mapManager, object, speedX, speedY)
 
@@ -83,23 +77,13 @@ class PhysicsManager(object):
                         if scrollValue[1] > 0 and speedY > 0 or scrollValue[1] < 0 and speedY < 0:
                             mapManager.scrollMap(0, scrollValue[1])
 
-                            for object in mapManager.objects.values():
-                                if object.name != ObjectName.PLAYER:
-                                    object.realY -= scrollValue[1]
-
-
                             if checkX:
                                 object.realX += speedX
-                        else:
-                            object.realY += speedY
 
-                            if speedY > 0:
-                                object.isOnGround = False
-                    else:
-                        object.realY += speedY
+                    object.realY += speedY
 
-                        if speedY > 0:
-                            object.isOnGround = False
+                    if speedY > 0:
+                        object.isOnGround = False
                 else:
                     if speedY > 0:
                         object.isOnGround = True
