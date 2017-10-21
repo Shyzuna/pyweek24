@@ -13,6 +13,7 @@ HUD_PATH = os.path.join(IMGS_PATH, 'hud')
 FONTS_PATH = os.path.join('data', 'fonts')
 DIALOGS_PATH = os.path.join('data', 'dialogs')
 END_SCREEN_PATH = os.path.join('data', 'imgs', 'screens', 'victory.png')
+SOUNDS_PATH = os.path.join('data', 'sounds')
 
 # Display
 SCREEN_WIDTH = 1200

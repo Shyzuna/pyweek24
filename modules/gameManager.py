@@ -13,6 +13,7 @@ from modules.guiManager import guiManager
 from modules.mapManager import mapManager
 from modules.physicsManager import physicsManager
 from modules.scrollManager import scrollManager
+from modules.soundManager import soundManager
 import settings.settings as settings
 
 from objects.enums import *
@@ -34,7 +35,7 @@ class GameManager(object):
         """
         pass
 
-    def init(self, playIntro):
+    def init(self, isIntroFinished):
         """
         Init stuff
         :return: Nothing
@@ -44,7 +45,7 @@ class GameManager(object):
         self.clock = pygame.time.Clock()
         self.fps = settings.FPS
         self.showFps = True
-        self.introFinished = not playIntro
+        self.introFinished = isIntroFinished
         self.gameWin = False
 
         self.managerList = {
@@ -54,11 +55,13 @@ class GameManager(object):
             "mapManager": mapManager,
             "scrollManager": scrollManager,
             "physicsManager": physicsManager,
+            "soundManager": soundManager
         }
 
         inputManager.init()
         mapManager.init()
         displayManager.init()
+        soundManager.init()
         guiManager.init()
         guiManager.initHud()
         mapManager.load('test.map',[])
@@ -75,7 +78,7 @@ class GameManager(object):
         while 1:
             self.mainLoop(self.menuLoop)
             self.mainLoop(self.gameLoop)
-            self.init(False)
+            self.init(True)
 
     def mainLoop(self,loop):
         """

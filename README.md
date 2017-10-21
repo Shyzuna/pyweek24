@@ -49,6 +49,8 @@ CREDIT :
   ARTS:
    * Ninja sprite : https://opengameart.org/content/block-ninja-2d-sprites
    * Tileset : http://www.gameart2d.com/sci-fi-platformer-tileset.html
+  MUSICS:
+   * Pyramid Level - Songs From An Unmade World - Visager : http://freemusicarchive.org/music/Visager/Songs_From_An_Unmade_World/
 
 
 LICENSE:
