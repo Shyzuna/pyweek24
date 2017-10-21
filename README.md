@@ -40,7 +40,15 @@ HOW TO PLAY THE GAME:
 Right arrow : move right
 Left arrow : move left
 Up arrow : jump
-CTRL : empowered jump or push
+CTRL : improvement skill
+ALT : push mode
+SPACE : free a Ninja
+
+
+CREDIT :
+  ARTS:
+   * Ninja sprite : https://opengameart.org/content/block-ninja-2d-sprites
+   * Tileset : http://www.gameart2d.com/sci-fi-platformer-tileset.html
 
 
 LICENSE:
