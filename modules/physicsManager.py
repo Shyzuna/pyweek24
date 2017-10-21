@@ -73,7 +73,7 @@ class PhysicsManager(object):
                 object.updateDisabledTime(deltaTime)
 
             speedY = (object.velocityY * deltaTime) / 1000
-            speedX = (object.velocityX * deltaTime) / 1000
+            speedX = int((object.velocityX * deltaTime) / 1000)
 
             (checkX, checkY) = self.checkCollision(mapManager, object, speedX, speedY, guiManager)
 

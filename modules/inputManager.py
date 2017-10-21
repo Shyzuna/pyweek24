@@ -138,9 +138,9 @@ class InputManager(object):
         else:
             # Should be if only block ?
             if self.directionState[pygame.K_RIGHT]:
-                player.velocityX = settings.MAX_VELOCITY_X / 1.5
+                player.velocityX = settings.MAX_VELOCITY_X / 1.6
             elif self.directionState[pygame.K_LEFT]:
-                player.velocityX = -settings.MAX_VELOCITY_X / 1.5
+                player.velocityX = -settings.MAX_VELOCITY_X / 1.6
             else:
                 player.velocityX = 0
                 player.animatedSprite.changeCurrentAnimation(AnimationType.IDLE)
