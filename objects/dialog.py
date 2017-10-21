@@ -38,6 +38,7 @@ class Dialog(object):
         self.isPlaying = False
         self.currentDial = 0
         self.currentTime = 0
+        self.name = file
 
     def play(self, guiManager):
         """
@@ -49,7 +50,7 @@ class Dialog(object):
             text = "{}: {}".format(self.content[self.currentDial]["author"],self.content[self.currentDial]["text"])
             guiManager.textBuffer.renderText(text)
 
-    def update(self, guiManager, deltaTime):
+    def update(self, guiManager, deltaTime, gameManager):
         """
         Update dialog
         :param guiManager:
@@ -64,6 +65,8 @@ class Dialog(object):
                 if self.currentDial >= len(self.content):
                     self.played = True
                     self.isPlaying = False
+                    if self.name == settings.INTRO_DIALOG_ID:
+                        gameManager.introFinished = True
                 else:
                     text = "{}: {}".format(self.content[self.currentDial]["author"], self.content[self.currentDial]["text"])
                     previusText = "{}: {}".format(self.content[self.currentDial - 1]["author"], self.content[self.currentDial - 1]["text"])

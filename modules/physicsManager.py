@@ -296,7 +296,8 @@ class PhysicsManager(object):
             tileY = math.floor(y / mapManager.tileHeight)
             dialog = mapManager.dialogsTile[tileY][tileX]
             if dialog not in self.nonBlockingTiles:
-                dialogList.append(mapManager.dialogs[dialog])
+                if not mapManager.dialogs[dialog] in dialogList:
+                    dialogList.append(mapManager.dialogs[dialog])
         return dialogList
 
 physicsManager = PhysicsManager()

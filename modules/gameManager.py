@@ -36,6 +36,7 @@ class GameManager(object):
         self.clock = pygame.time.Clock()
         self.fps = settings.FPS
         self.showFps = True
+        self.introFinished = True
 
         self.managerList = {
             "displayManager": displayManager,
@@ -97,8 +98,12 @@ class GameManager(object):
         Loop for the game
         :return: Nothing
         """
+
         inputManager.handleEvents(guiManager, displayManager, mapManager)
-        inputManager.applyPlayerMoveEvents(self.managerList, self.deltaTime)
+
+        if self.introFinished:
+            inputManager.applyPlayerMoveEvents(self.managerList, self.deltaTime)
+
         physicsManager.applyGravity(mapManager)
         physicsManager.applyFriction(mapManager)
         physicsManager.computeVelocity(mapManager, scrollManager, guiManager, self.deltaTime)
@@ -109,7 +114,7 @@ class GameManager(object):
         for object in mapManager.objects.values():
             object.animatedSprite.playAnimation(self.deltaTime)
 
-        mapManager.updateDialogs(guiManager, self.deltaTime)
+        mapManager.updateDialogs(guiManager, self.deltaTime, self)
         guiManager.updateHud(self.deltaTime)
         displayManager.display(mapManager,guiManager)
 

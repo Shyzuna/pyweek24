@@ -133,7 +133,7 @@ class MapManager:
 
             print(objectType.GAME_OBJECT.value)
 
-    def updateDialogs(self, guiManager, deltaTime):
+    def updateDialogs(self, guiManager, deltaTime, gameManager):
         """
         Update all dialogs
         :param guiManager:
@@ -141,7 +141,7 @@ class MapManager:
         :return:
         """
         for dialog in self.dialogs.values():
-            dialog.update(guiManager, deltaTime)
+            dialog.update(guiManager, deltaTime, gameManager)
 
     def scrollMap(self, x, y):
         """
