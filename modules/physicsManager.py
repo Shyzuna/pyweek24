@@ -68,6 +68,7 @@ class PhysicsManager(object):
             # object.realY = object.y + mapManager.currentRect.y
 
             if object.name == ObjectName.PLAYER:
+                object.ninjaToFree = []
                 object.updateEmpoweringPushingTime(deltaTime)
                 object.updateDisabledTime(deltaTime)
 
@@ -166,6 +167,11 @@ class PhysicsManager(object):
                 if obj.name == ObjectName.PLAYER:
                     self.checkDmgAble([topRightYCollision, bottomRightYCollision],
                                           obj, guiManager)
+
+                    self.checkNinjaAble([topRightYCollision, bottomRightYCollision],
+                                          obj)
+
+
                 checkY = False
 
         # Jumping
@@ -180,6 +186,10 @@ class PhysicsManager(object):
                 if obj.name == ObjectName.PLAYER:
                     self.checkDmgAble([topLeftYCollision, topRightYCollision],
                                           obj, guiManager)
+
+                    self.checkNinjaAble([topLeftYCollision, topRightYCollision],
+                                        obj)
+
                 checkY = False
 
         # Right
@@ -196,6 +206,10 @@ class PhysicsManager(object):
                 if obj.name == ObjectName.PLAYER:
                     self.checkDmgAble([topRightXCollision, bottomRightXCollision],
                                           obj, guiManager)
+
+                    self.checkNinjaAble([topRightXCollision, bottomRightXCollision],
+                                        obj)
+
                 checkX = False
 
         # Left
@@ -212,6 +226,9 @@ class PhysicsManager(object):
                 if obj.name == ObjectName.PLAYER:
                     self.checkDmgAble([bottomLeftXCollision, topLeftXCollision],
                                       obj, guiManager)
+
+                    self.checkNinjaAble([bottomLeftXCollision, topLeftXCollision],
+                                        obj)
                 checkX = False
 
         return (checkX, checkY)
@@ -236,6 +253,12 @@ class PhysicsManager(object):
                 if not player.disabled:
                     player.takeDmg()
 
+    def checkNinjaAble(self, objectList, player):
+        for obj in objectList:
+            if obj and obj.type == ObjectType.NINJA:
+                if not obj.isFree:
+                    player.ninjaToFree.append(obj)
+
     def checkObjectCollision(self, mapManager, obj, corner):
         """
         Check if a corner collide an object
@@ -243,8 +266,10 @@ class PhysicsManager(object):
         :param corner:
         :return: object/None
         """
+
         for object in mapManager.objects.values():
-            if object != obj:
+            libre = object.type == ObjectType.NINJA and object.isFree
+            if object != obj and not libre:
                 rect = pygame.Rect(object.realX,object.realY,object.width,object.height)
                 if rect.collidepoint(corner):
                     return object

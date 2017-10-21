@@ -161,14 +161,6 @@ class GUIManager(object):
         self.innerSpace = leftHeight / (self.barNumber + 1)
 
         self.cooldownBars = []
-        for i in range(0, self.barNumber):
-            bar = {
-                "displayed": True,
-                "percent": 0,
-                "alive": True,
-                "empowering": False
-            }
-            self.cooldownBars.append(bar)
         self.empoweringWaiting = -1
         self.loadSpeed = 10
         self.unloadSpeed = -25
@@ -178,6 +170,15 @@ class GUIManager(object):
         self.classicBar.fill(Colors.WHITE.value)
         self.classicBar.set_colorkey(Colors.WHITE.value)
         pygame.draw.rect(self.classicBar, Colors.BLACK.value, self.classicBar.get_rect(),2)
+
+    def addNinjaBar(self):
+        bar = {
+            "displayed": True,
+            "percent": 0,
+            "alive": True,
+            "empowering": False
+        }
+        self.cooldownBars.append(bar)
 
     def empowerSpell(self):
         """
