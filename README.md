@@ -27,7 +27,7 @@ On Windows Move to the game directory and run:
 
 RUNNING THE GAME:
 
-On Windows, locate the "main.exe" file and double-click it.
+On Windows, locate the "build\exe.win-amd64-3.6\main.exe" file and double-click it.
 
 Otherwise open a terminal / console and "cd" to the game directory and run:
 
