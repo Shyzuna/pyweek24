@@ -10,6 +10,7 @@ TODO:
 from objects.enums import ObjectName
 
 import math
+import pygame
 
 class PhysicsManager(object):
     """
@@ -121,11 +122,20 @@ class PhysicsManager(object):
         checkX = True
         checkY = True
 
+        topLeftYCollision = self.checkObjectCollision(mapManager, obj, topLeftY)
+        topRightYCollision = self.checkObjectCollision(mapManager, obj, topRightY)
+        bottomLeftYCollision = self.checkObjectCollision(mapManager, obj, bottomLeftY)
+        bottomRightYCollision = self.checkObjectCollision(mapManager, obj, bottomRightY)
+
         # Falling
         if (speedY > 0):
             (chkX, chkY) = self.checkTileCollision(mapManager, obj, (bottomRightY, bottomLeftY), False)
 
             if not chkY and checkY:
+                checkY = False
+
+            # Check collision with other obj
+            if bottomLeftYCollision or bottomRightYCollision:
                 checkY = False
 
         # Jumping
@@ -135,10 +145,18 @@ class PhysicsManager(object):
             if not chkY and checkY:
                 checkY = False
 
+            # Check collision with other obj
+            if topLeftYCollision or topRightYCollision:
+                checkY = False
+
         # Right
         if (speedX > 0):
             (chkX, chkY) = self.checkTileCollision(mapManager, obj, (topRightX, bottomRightX), True)
             if not chkX and checkX:
+                checkX = False
+
+            # Check collision with other obj
+            if topRightYCollision or bottomRightYCollision:
                 checkX = False
 
         # Left
@@ -147,10 +165,26 @@ class PhysicsManager(object):
             if not chkX and checkX:
                 checkX = False
 
+            # Check collision with other obj
+            if bottomLeftYCollision or topLeftYCollision:
+                checkX = False
+
         return (checkX, checkY)
 
-        # Check collision with other obj
-        # SOON
+
+    def checkObjectCollision(self, mapManager, obj, corner):
+        """
+        Check if a corner collide an object
+        :param mapManager:
+        :param corner:
+        :return: True/False
+        """
+        for object in mapManager.objects.values():
+            if object != obj:
+                rect = pygame.Rect(object.realX,object.realY,object.width,object.height)
+                if rect.collidepoint(corner):
+                    return True
+        return False
 
     def checkTileCollision(self, mapManager, obj, corners, isXAxis):
         """
