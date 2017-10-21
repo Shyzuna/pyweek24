@@ -97,5 +97,69 @@ ObjectsAnimations = {
                 "timeDuration": -1
             }
         ]
+    },
+    ObjectName.SPIKES: {
+        'imgPath': os.path.join(settings.TRAPS_PATH, "c.png"),
+        'maxSpriteW': 1,
+        'maxSpriteH': 1,
+        'imgRatio': 2.1,
+        'animations': [
+            {
+                "name": AnimationType.IDLE,
+                "direction": Direction.RIGHT,
+                "spriteNumber": 1,
+                "line": 0,
+                "isDefault": True,
+                "timeDuration": -1
+            }
+        ]
+    },
+    ObjectName.ACID: {
+        'imgPath': os.path.join(settings.TRAPS_PATH, "a.png"),
+        'maxSpriteW': 1,
+        'maxSpriteH': 1,
+        'imgRatio': 2,
+        'animations': [
+            {
+                "name": AnimationType.IDLE,
+                "direction": Direction.RIGHT,
+                "spriteNumber": 1,
+                "line": 0,
+                "isDefault": True,
+                "timeDuration": -1
+            }
+        ]
+    },
+    ObjectName.NINJA: {
+        'imgPath': os.path.join(settings.CHARACTERS_PATH, "Ninja.png"),
+        'maxSpriteW': 5,
+        'maxSpriteH': 5,
+        'imgRatio': 1,
+        'animations': [
+            {
+                "name": AnimationType.IDLE,
+                "direction": Direction.RIGHT,
+                "spriteNumber": 2,
+                "line": 2,
+                "isDefault": True,
+                "timeDuration": 1000
+            }
+        ]
+    },
+    ObjectName.SAW: {
+        'imgPath': os.path.join(settings.TRAPS_PATH, "b.png"),
+        'maxSpriteW': 1,
+        'maxSpriteH': 1,
+        'imgRatio': 2.8,
+        'animations': [
+            {
+                "name": AnimationType.IDLE,
+                "direction": Direction.RIGHT,
+                "spriteNumber": 1,
+                "line": 0,
+                "isDefault": True,
+                "timeDuration": -1
+            }
+        ]
     }
 }

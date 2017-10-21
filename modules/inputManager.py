@@ -52,7 +52,7 @@ class InputManager(object):
         :return: Nothing
         """
 
-        player = mapManager.objects[ObjectName.PLAYER]
+        player = mapManager.objects[settings.PLAYER_ID]
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -106,7 +106,7 @@ class InputManager(object):
         physicsManager = managerList["physicsManager"]
         scrollManager = managerList["scrollManager"]
         guiManager = managerList["guiManager"]
-        player = mapManager.objects[ObjectName.PLAYER]
+        player = mapManager.objects[settings.PLAYER_ID]
 
         if player.isOnGround:
             if self.directionState[pygame.K_RIGHT]:

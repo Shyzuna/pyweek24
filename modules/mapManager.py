@@ -92,7 +92,7 @@ class MapManager:
             line = mapFile.readline()
             while settings.DATA_DELIMITER not in line:
                 line = line.rstrip()
-                name, type, pos = line.split('|')
+                id, name, type, pos = line.split('|')
                 name = objectName(name)
                 type = objectType(type)
 
@@ -119,7 +119,7 @@ class MapManager:
                     obj = gameObjects.Trap(name, type, x, y, tileX, tileY, w, h)
 
                 if obj is not None:
-                    self.objects[name] = obj
+                    self.objects[id] = obj
 
                 line = mapFile.readline()
 

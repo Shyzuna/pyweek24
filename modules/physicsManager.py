@@ -7,7 +7,7 @@ TODO:
 *
 """
 
-from objects.enums import ObjectName
+import settings.settings as settings
 
 import math
 import pygame
@@ -206,7 +206,6 @@ class PhysicsManager(object):
             tileY = math.floor(y / mapManager.tileHeight)
 
             if tileX >= mapManager.width or tileY >= mapManager.height or tileX < 0 or tileY < 0:
-                print("out")
                 return (False, False)
 
             if mapManager.tiles[tileY][tileX] not in self.nonBlockingTiles:
@@ -226,7 +225,7 @@ class PhysicsManager(object):
         """
         # TODO: Maybe could use the corner in checkcollision fct but not enough time ...
         dialogList = []
-        player = mapManager.objects[ObjectName.PLAYER]
+        player = mapManager.objects[settings.PLAYER_ID]
         topLeft = (player.realX, player.realY)
         topRight = (player.realX + player.width, player.realY)
         bottomLeft = (player.realX, player.realY + player.height)
