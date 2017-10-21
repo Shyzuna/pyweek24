@@ -147,16 +147,21 @@ class DisplayManager(object):
         # Update screen
         pygame.display.flip()
 
-    def displayEndScreen(self):
+    def displayEndScreen(self, mapManager):
         """
         Display all elements
         :return: Nothing
         """
         # Clear screen
-        self.screen.fill(Colors.WHITE.value)
-        img = pygame.image.load(settings.END_SCREEN_PATH)
+        self.screen.fill(Colors.GREY.value)
 
-        self.screen.blit(img, (0, 0))
+        img = pygame.image.load(settings.END_SCREEN_PATH)
+        img_size = img.get_size()
+        x = (settings.SCREEN_WIDTH - img_size[0]) // 2
+        y = (settings.SCREEN_HEIGHT - img_size[1]) // 2
+        rect = img.get_rect()
+
+        self.screen.blit(img, (x, y))
 
         # Update screen
         pygame.display.flip()

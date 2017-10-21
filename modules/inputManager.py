@@ -50,7 +50,7 @@ class InputManager(object):
         if event.key == pygame.K_F5:
             displayManager.toggleFullScreen(guiManager)
 
-    def handleEvents(self, guiManager, displayManager, mapManager):
+    def handleEvents(self, guiManager, displayManager, mapManager, gameManager):
         """
         Update events data and handle closing event
         :return: Nothing
@@ -66,7 +66,7 @@ class InputManager(object):
                 if event.key in self.directionState.keys():
                     self.directionState[event.key] = False
                 elif event.key == pygame.K_RETURN:
-                    if guiManager.endofGame:
+                    if guiManager.endofGame or gameManager.gameWin:
                         self.exitLoop = True
                     else:
                         guiManager.textBuffer.scrollNextText()
@@ -138,9 +138,9 @@ class InputManager(object):
         else:
             # Should be if only block ?
             if self.directionState[pygame.K_RIGHT]:
-                player.velocityX = settings.MAX_VELOCITY_X / 2
+                player.velocityX = settings.MAX_VELOCITY_X / 1.5
             elif self.directionState[pygame.K_LEFT]:
-                player.velocityX = -settings.MAX_VELOCITY_X / 2
+                player.velocityX = -settings.MAX_VELOCITY_X / 1.5
             else:
                 player.velocityX = 0
                 player.animatedSprite.changeCurrentAnimation(AnimationType.IDLE)

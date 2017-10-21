@@ -15,6 +15,7 @@ class Colors(Enum):
     YELLOW = (255,255,0)
     BLUE = (0,0,255)
     RED = (255, 0, 0)
+    GREY = (125, 125, 125)
 
 class ObjectName(Enum):
     """

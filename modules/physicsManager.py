@@ -256,7 +256,7 @@ class PhysicsManager(object):
     def checkNinjaAble(self, objectList, player):
         for obj in objectList:
             if obj and obj.type == ObjectType.NINJA:
-                if not obj.isFree:
+                if not obj.isFree and not obj in player.ninjaToFree:
                     player.ninjaToFree.append(obj)
 
     def checkObjectCollision(self, mapManager, obj, corner):

@@ -59,7 +59,7 @@ class Dialog(object):
         """
         if self.isPlaying:
             if self.name == settings.END_DIALOG_ID:
-                gameManager.gameFinished = True
+                gameManager.gameWin = True
 
             self.currentTime += deltaTime
             if self.currentTime > self.content[self.currentDial]["time"]:

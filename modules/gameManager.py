@@ -44,8 +44,8 @@ class GameManager(object):
         self.clock = pygame.time.Clock()
         self.fps = settings.FPS
         self.showFps = True
-        self.introFinished = True
-        self.gameFinished = False
+        self.introFinished = False
+        self.gameWin = False
 
         self.managerList = {
             "displayManager": displayManager,
@@ -107,17 +107,17 @@ class GameManager(object):
         :return: Nothing
         """
 
-        if guiManager.endofGame:
+        if guiManager.endofGame or self.gameWin:
             self.player.disabled = True
             self.player.animatedSprite.changeCurrentAnimation(AnimationType.DEAD)
 
-        inputManager.handleEvents(guiManager, displayManager, mapManager)
+        inputManager.handleEvents(guiManager, displayManager, mapManager, self)
         self.done = inputManager.exitLoop
 
         if self.introFinished:
             inputManager.applyPlayerMoveEvents(self.managerList, self.deltaTime)
 
-        if not guiManager.endofGame:
+        if not guiManager.endofGame and not self.gameWin:
             physicsManager.applyGravity(mapManager)
             physicsManager.applyFriction(mapManager)
             physicsManager.computeVelocity(mapManager, scrollManager, guiManager, self.deltaTime)
@@ -127,12 +127,14 @@ class GameManager(object):
 
             mapManager.updateDialogs(guiManager, self.deltaTime, self)
 
-        for object in mapManager.objects.values():
-            object.animatedSprite.playAnimation(self.deltaTime)
+        if not self.gameWin:
+            for object in mapManager.objects.values():
+                object.animatedSprite.playAnimation(self.deltaTime)
 
-        guiManager.updateHud(self.deltaTime)
-        displayManager.display(mapManager,guiManager)
-
+            guiManager.updateHud(self.deltaTime)
+            displayManager.display(mapManager,guiManager)
+        else:
+            displayManager.displayEndScreen(mapManager)
 
 
 gameManager = GameManager()
