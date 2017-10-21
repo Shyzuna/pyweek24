@@ -70,17 +70,13 @@ class MapManager:
             self.mapSizeY = self.height * self.tileHeight
 
             # Tiles
-            print("tiles")
             mapFile.readline()
             line = mapFile.readline()
             while settings.DATA_DELIMITER not in line:
                 self.tiles.append(list(line.rstrip()))
                 line = mapFile.readline()
 
-            print(self.tiles)
-
             # Dialogs
-            print("dialogs")
             line = mapFile.readline()
             while settings.DATA_DELIMITER not in line:
                 self.dialogsTile.append(list(line.rstrip()))
@@ -88,8 +84,6 @@ class MapManager:
                     if c != '0' and c not in self.dialogs.keys():
                         self.dialogs[c] = Dialog(c)
                 line = mapFile.readline()
-
-            print(self.dialogs)
 
             # Objects
             line = mapFile.readline()
@@ -109,8 +103,6 @@ class MapManager:
                 x,y = tileX * self.tileWidth, tileY * self.tileHeight
                 #w, h = img[name].get_width(), img[name].get_height()
                 w, h = 0, 1
-
-                print(str(name) + " " + str(type) + " " + str(x) + " " + str(y) + " " + str(w))
 
                 obj = None
 
@@ -133,8 +125,6 @@ class MapManager:
                     self.objects[id] = obj
 
                 line = mapFile.readline()
-
-            print(objectType.GAME_OBJECT.value)
 
     def updateDialogs(self, guiManager, deltaTime, gameManager):
         """
