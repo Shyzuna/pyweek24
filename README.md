@@ -27,7 +27,7 @@ On Windows Move to the game directory and run:
 
 RUNNING THE GAME:
 
-On Windows, locate the "main.exe" file and double-click it.
+On Windows, locate the "build\exe.win-amd64-3.6\main.exe" file and double-click it.
 
 Otherwise open a terminal / console and "cd" to the game directory and run:
 
@@ -40,7 +40,15 @@ HOW TO PLAY THE GAME:
 Right arrow : move right
 Left arrow : move left
 Up arrow : jump
-CTRL : empowered jump or push
+CTRL : improvement skill
+ALT : push mode
+SPACE : free a Ninja
+
+
+CREDIT :
+  ARTS:
+   * Ninja sprite : https://opengameart.org/content/block-ninja-2d-sprites
+   * Tileset : http://www.gameart2d.com/sci-fi-platformer-tileset.html
 
 
 LICENSE:
